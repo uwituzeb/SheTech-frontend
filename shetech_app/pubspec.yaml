@@ -52,6 +52,15 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - images/img.jpg
+    - images/google.png
+  fonts:
+  - family: Outfit
+    fonts:
+      - asset: fonts/Outfit-Regular.ttf
+      - asset: fonts/Outfit-Bold.ttf
+        weight: 700
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

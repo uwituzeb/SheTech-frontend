@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "71036710855",
+    "project_id": "shetech-d61dd",
+    "storage_bucket": "shetech-d61dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71036710855:android:c626b7da52b9e3188133e2",
+        "android_client_info": {
+          "package_name": "shetech.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwSzM9soHeOVNwWd5aUizJmwEHmngqjdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

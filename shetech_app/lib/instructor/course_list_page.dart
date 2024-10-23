@@ -11,11 +11,17 @@ class CourseListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromARGB(255, 157, 78, 221),
-        actions: const [
-          Icon(Icons.person), // User profile icon
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
         ],
       ),
       body: Padding(
@@ -128,7 +134,7 @@ class CourseListPage extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    foregroundColor: const Color.fromARGB(255, 157, 78, 221),
+                    foregroundColor: Theme.of(context).primaryColor,
                     side: const BorderSide(
                       color: Color.fromARGB(255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
@@ -139,7 +145,7 @@ class CourseListPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 157, 78, 221),
+                    backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Manage courses'),

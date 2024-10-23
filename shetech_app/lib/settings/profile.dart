@@ -59,8 +59,9 @@ class _ShetechProfileState extends State<ShetechProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 146, 100, 184),
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -346,7 +347,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
               Container(
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 146, 100, 184),
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
@@ -368,7 +369,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
-                      color: Colors.grey,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -378,7 +379,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 146, 100, 184),
+        backgroundColor: Theme.of(context).primaryColor,
         selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,

@@ -41,8 +41,9 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 146, 100, 164),
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text(
           'Settings',
           style: TextStyle(
@@ -195,7 +196,7 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 146, 100, 184),
+        backgroundColor: Theme.of(context).primaryColor,
         selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,

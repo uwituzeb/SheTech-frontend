@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:shetech/main.dart';
+import '../../shetech_app/lib/settings/profile.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

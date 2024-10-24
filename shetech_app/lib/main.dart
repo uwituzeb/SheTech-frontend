@@ -6,6 +6,8 @@ import 'forgot_password_screen.dart';
 import 'welcome_screen.dart';
 import 'reset_password.dart';
 import 'create_password.dart';
+import 'homepage.dart';
+import 'eventpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
+        '/homepage': (context) => HomeScreen(),
         '/': (context) => SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -33,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/create-password': (context) => const CreatePasswordScreen(),
+        '/eventpage': (context) => const BookingScreen(),
       },
     );
   }

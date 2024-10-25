@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -20,20 +19,16 @@ class _SettingScreenState extends State<SettingScreen> {
 
     switch (index) {
       case 0: // Home
-        // Add navigation to Home Screen if needed
+        Navigator.pushReplacementNamed(context, '/');
         break;
       case 1: // Calendar
-        // Add navigation to Calendar Screen if needed
+        Navigator.pushReplacementNamed(context, '/book-event');
         break;
       case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
       case 3: // Profile
-        Navigator.pop(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ShetechProfile(currentIndex: _selectedIndex)),
-        );
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }

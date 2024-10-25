@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const SheTechApp());
-}
-
-class SheTechApp extends StatelessWidget {
-  const SheTechApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BookingScreen(),
-    );
-  }
-}
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -26,12 +11,36 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   String paymentMethod = 'By Card'; // Default payment method
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    switch (index) {
+      case 0: // Home
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 1: // Calendar
+        Navigator.pushReplacementNamed(context, '/book-event');
+        break;
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/settings');
+        break;
+      case 3: // Profile
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var elevatedButton = ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -44,8 +53,9 @@ class _BookingScreenState extends State<BookingScreen> {
     );
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('SheTech', style: TextStyle(color: Colors.white)),
         actions: [
           DropdownButton<String>(
@@ -151,27 +161,28 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.purple, // Set the background color to purple
-        selectedItemColor: Colors.purple, // Selected item color
-        unselectedItemColor: Colors.purple, // Unselected item color
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Events',
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'settings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.person_3_rounded),
+            label: 'profile',
           ),
         ],
       ),

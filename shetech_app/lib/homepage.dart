@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
-
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  
   @override
+  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -23,9 +13,26 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    switch (index) {
+      case 0: // Home
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 1: // Calendar
+        Navigator.pushReplacementNamed(context, '/book-event');
+        break;
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/settings');
+        break;
+      case 3: // Profile
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
   }
 
   static const List<Widget> _pages = <Widget>[
@@ -38,12 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('SheTech', style: TextStyle(color: Colors.white)),
         actions: [
           DropdownButton<String>(
-            dropdownColor: Colors.purple,
+            dropdownColor: Theme.of(context).primaryColor,
             value: 'Elliane Munezero',
             items: <String>['Elliane Munezero'].map((String value) {
               return DropdownMenuItem<String>(
@@ -60,29 +68,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // Bottom Navigation Bar 
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.grey, // White for selected item
-        unselectedItemColor: Colors.purple, // Lighter white for unselected items
-        backgroundColor: Colors.purple, // Purple background
-        currentIndex: _selectedIndex, // Keep track of the selected index
-        onTap: _onItemTapped, // Handle tap
-        showSelectedLabels: true, // Show labels for selected items
-        showUnselectedLabels: true, // Show labels for unselected items
-        items: const [
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Events',
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'settings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.person_3_rounded),
+            label: 'profile',
           ),
         ],
       ),

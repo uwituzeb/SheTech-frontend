@@ -39,19 +39,16 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
     switch (index) {
       case 0: // Home
-        // Add navigation to Home Screen if needed
+        Navigator.pushReplacementNamed(context, '/');
         break;
       case 1: // Calendar
-        // Add navigation to Calendar Screen if needed
+        Navigator.pushReplacementNamed(context, '/book-event');
         break;
-      case 2: // Settings
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SettingScreen()),
-        );
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
       case 3: // Profile
-        // Add navigation to Profile Screen if needed
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }

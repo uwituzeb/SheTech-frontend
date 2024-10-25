@@ -22,7 +22,7 @@ class _SettingScreenState extends State<SettingScreen> {
         Navigator.pushReplacementNamed(context, '/');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 2: // Setting
         Navigator.pushReplacementNamed(context, '/settings');

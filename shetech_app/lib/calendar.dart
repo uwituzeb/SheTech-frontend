@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPageaScreen extends StatefulWidget {
-  const CalendarPageaScreen({super.key});
+class CalendarPageScreen extends StatefulWidget {
+  const CalendarPageScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _CalendarPageState createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPageaScreen> {
+class _CalendarPageState extends State<CalendarPageScreen> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    switch (index) {
+      case 0: // Home
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 1: // Calendar
+        Navigator.pushReplacementNamed(context, '/calendar');
+        break;
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/settings');
+        break;
+      case 3: // Profile
+        Navigator.pushReplacementNamed(context, '/profile');
+        break;
+    }
+  }
 
   // Map to store events for different days
   final Map<DateTime, List<Event>> _events = {};
@@ -46,11 +70,12 @@ class _CalendarPageState extends State<CalendarPageaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('SheTech'),
         titleTextStyle: const TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-        backgroundColor: const Color.fromARGB(255, 157, 78, 221),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: const [
           Icon(Icons.person), // Icon representing user
         ],
@@ -109,6 +134,32 @@ class _CalendarPageState extends State<CalendarPageaScreen> {
                 },
               ),
             ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_3_rounded),
+            label: 'profile',
           ),
         ],
       ),

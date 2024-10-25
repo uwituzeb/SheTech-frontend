@@ -11,6 +11,7 @@ import 'eventpage.dart';
 import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
+import 'calendar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/instructor/course-list': (context) => const CourseListPage(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
+        '/calendar': (context) => const CalendarPageScreen()
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'settings.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'splash.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'forgot_password_screen.dart';
-import 'welcome_screen.dart';
-import 'reset_password.dart';
-import 'create_password.dart';
+import 'splash/splash.dart';
+import 'authentication/signup_screen.dart';
+import 'authentication/login_screen.dart';
+import 'authentication/forgot_password_screen.dart';
+import 'splash/welcome_screen.dart';
+import 'authentication/reset_password.dart';
+import 'authentication/create_password.dart';
 import 'homepage.dart';
-import 'eventpage.dart';
+import 'events/eventpage.dart';
 import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
-import 'calendar.dart';
+import 'events/calendar.dart';
 import 'learners/courses_list.dart';
 
 void main() {

@@ -15,168 +15,210 @@ class CourseListPageScreen extends StatefulWidget {
 
 class _CourseListPageScreenState extends State<CourseListPageScreen> {
   int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    if (index != _selectedIndex) {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
 
-    switch (index) {
-      case 0: // Home
-        Navigator.pushReplacementNamed(context, '/');
-        break;
-      case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/courses');
-        break;
-      case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/book-event');
-        break;
-      case 3: // Profile
-        Navigator.pushReplacementNamed(context, '/settings');
-        break;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selected index based on the current route
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String? currentRoute = ModalRoute.of(context)?.settings.name;
+      setState(() {
+        _selectedIndex = _getIndexFromRoute(currentRoute);
+      });
+    });
+  }
+
+  int _getIndexFromRoute(String? route) {
+    switch (route) {
+      case '/':
+        return 0;
+      case '/courses':
+        return 1;
+      case '/calendar':
+        return 2;
+      case '/settings':
+        return 3;
+      default:
+        return 0;
     }
   }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? '/';
+    String targetRoute;
+
+    switch (index) {
+      case 0:
+        targetRoute = '/';
+        break;
+      case 1:
+        targetRoute = '/courses';
+        break;
+      case 2:
+        targetRoute = '/calendar';
+        break;
+      case 3:
+        targetRoute = '/settings';
+        break;
+      default:
+        targetRoute = '/';
+    }
+
+    if (currentRoute != targetRoute) {
+      Navigator.pushReplacementNamed(context, targetRoute).then((_) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-        backgroundColor: Theme.of(context).primaryColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Search bar
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search course',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                fillColor: Colors.grey[200],
-                filled: true,
-              ),
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      onWillPop: () async {
+        if (_selectedIndex != 0) {
+          setState(() {
+            _selectedIndex = 0;
+          });
+          Navigator.pushReplacementNamed(context, '/');
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
             ),
-            const SizedBox(height: 20),
-
-            // Course List
-            Expanded(
-              child: ListView(
-                children: [
-                  // Course 1
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HtmlPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/html.jpg',
-                      title: 'Introduction to HTML',
-                      instructor: 'Samule Doe',
-                      students: '4k student',
-                      rating: 4.7,
-                    ),
-                  ),
-                  // Course 2
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MlPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/ml.jpg',
-                      title: 'Machine Learning',
-                      instructor: 'Sarrah Morry',
-                      students: '2k student',
-                      rating: 4.0,
-                    ),
-                  ),
-                  // Course 3
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const FrontEndPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/front-end.jpg',
-                      title: 'Front-end Development',
-                      instructor: 'Sarrah Morry',
-                      students: '1k student',
-                      rating: 4.2,
-                    ),
-                  ),
-                  // Course 4
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const DbPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/database.jpg',
-                      title: 'Database normalization',
-                      instructor: 'Sarrah Morry',
-                      students: '2k student',
-                      rating: 4.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
-        unselectedItemColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search course',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              Expanded(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HtmlPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/html.jpg',
+                        title: 'Introduction to HTML',
+                        instructor: 'Samule Doe',
+                        students: '4k student',
+                        rating: 4.7,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MlPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/ml.jpg',
+                        title: 'Machine Learning',
+                        instructor: 'Sarrah Morry',
+                        students: '2k student',
+                        rating: 4.0,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FrontEndPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/front-end.jpg',
+                        title: 'Front-end Development',
+                        instructor: 'Sarrah Morry',
+                        students: '1k student',
+                        rating: 4.2,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const DbPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/database.jpg',
+                        title: 'Database normalization',
+                        instructor: 'Sarrah Morry',
+                        students: '2k student',
+                        rating: 4.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_sharp),
-            label: 'calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'settings',
-          ),
-        ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+          unselectedItemColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu_book),
+              label: 'courses',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today_sharp),
+              label: 'calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'settings',
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -28,7 +28,7 @@ class _BookingScreenState extends State<BookingScreen> {
         Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 3: // Profile
         Navigator.pushReplacementNamed(context, '/settings');
@@ -55,22 +55,17 @@ class _BookingScreenState extends State<BookingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-        actions: [
-          DropdownButton<String>(
-            dropdownColor: Colors.purple,
-            value: 'Elliane Munezero',
-            items: <String>['Elliane Munezero'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: const TextStyle(color: Colors.white)),
-              );
-            }).toList(),
-            onChanged: (_) {},
-          ),
-        ],
-      ),
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
+        ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -79,7 +74,7 @@ class _BookingScreenState extends State<BookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Banner image (use Image.asset for local image)
-                Image.asset('assets/images/event.jpeg',
+                Image.asset('images/event.jpg',
                     height: 200, width: 450, fit: BoxFit.cover),
                 const SizedBox(height: 16),
                 // Motivational Quote

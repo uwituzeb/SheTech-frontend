@@ -25,7 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
         Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 3: // Profile
         Navigator.pushReplacementNamed(context, '/settings');
@@ -38,16 +38,17 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          'Settings',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
         ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

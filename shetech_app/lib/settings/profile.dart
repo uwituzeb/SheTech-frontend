@@ -41,13 +41,13 @@ class _ShetechProfileState extends State<ShetechProfile> {
         Navigator.pushReplacementNamed(context, '/');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/settings');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 3: // Profile
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
   }
@@ -57,35 +57,17 @@ class _ShetechProfileState extends State<ShetechProfile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'SheTech',
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Outfit',
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            Row(
-              children: [
-                Text(
-                  'Eliane Munezero',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-                Icon(Icons.arrow_drop_down),
-              ],
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
             ),
           ],
         ),
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

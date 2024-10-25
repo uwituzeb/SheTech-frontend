@@ -61,6 +61,7 @@ flutter:
     - images/front-end.jpg
     - images/html.jpg
     - images/ml.jpg
+    - images/event.jpg
   fonts:
   - family: Outfit
     fonts:

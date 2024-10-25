@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'splash.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'forgot_password_screen.dart';
-import 'welcome_screen.dart';
-import 'reset_password.dart';
-import 'create_password.dart';
+import 'splash/splash.dart';
+import 'authentication/signup_screen.dart';
+import 'authentication/login_screen.dart';
+import 'authentication/forgot_password_screen.dart';
+import 'splash/welcome_screen.dart';
+import 'authentication/reset_password.dart';
+import 'authentication/create_password.dart';
 import 'homepage.dart';
-import 'eventpage.dart';
+import 'events/eventpage.dart';
 import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
-import 'calendar.dart';
-import 'learners/courses-list.dart';
+import 'events/calendar.dart';
+import 'learners/courses_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/create-password': (context) => const CreatePasswordScreen(),
         '/book-event': (context) => const BookingScreen(),
-        '/instructor/course-list': (context) => const CourseListPage(),
+        '/instructor/courses': (context) => const CourseListPage(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
         '/calendar': (context) => const CalendarPageScreen(),
-        '/learners/course-list': (context) => const CourseListPageScreen()
+        '/courses': (context) => const CourseListPageScreen()
       },
     );
   }

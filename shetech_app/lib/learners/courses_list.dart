@@ -6,9 +6,37 @@ import 'package:shetech_app/instructor/ml_page.dart';
 import 'package:shetech_app/instructor/html_page.dart';
 
 
-class CourseListPageScreen extends StatelessWidget {
+class CourseListPageScreen extends StatefulWidget {
   const CourseListPageScreen({super.key});
 
+  @override
+  State<CourseListPageScreen> createState() => _CourseListPageScreenState();
+}
+
+class _CourseListPageScreenState extends State<CourseListPageScreen> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    switch (index) {
+      case 0: // Home
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case 1: // Calendar
+        Navigator.pushReplacementNamed(context, '/courses');
+        break;
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/book-event');
+        break;
+      case 3: // Profile
+        Navigator.pushReplacementNamed(context, '/settings');
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +151,32 @@ class CourseListPageScreen extends StatelessWidget {
 
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
+        ],
       ),
     );
   }

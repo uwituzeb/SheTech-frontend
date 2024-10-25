@@ -12,7 +12,7 @@ import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
 import 'calendar.dart';
-import 'learners/courses-list.dart';
+import 'learners/courses_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/create-password': (context) => const CreatePasswordScreen(),
         '/book-event': (context) => const BookingScreen(),
-        '/instructor/course-list': (context) => const CourseListPage(),
+        '/instructor/courses': (context) => const CourseListPage(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
         '/calendar': (context) => const CalendarPageScreen(),
-        '/learners/course-list': (context) => const CourseListPageScreen()
+        '/courses': (context) => const CourseListPageScreen()
       },
     );
   }

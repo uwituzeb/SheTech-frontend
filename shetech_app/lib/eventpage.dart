@@ -25,13 +25,13 @@ class _BookingScreenState extends State<BookingScreen> {
         Navigator.pushReplacementNamed(context, '/');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/settings');
+        Navigator.pushReplacementNamed(context, '/book-event');
         break;
       case 3: // Profile
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
   }
@@ -173,16 +173,16 @@ class _BookingScreenState extends State<BookingScreen> {
             label: 'home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_sharp),
             label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_3_rounded),
-            label: 'profile',
           ),
         ],
       ),

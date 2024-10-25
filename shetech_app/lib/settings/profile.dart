@@ -387,16 +387,16 @@ class _ShetechProfileState extends State<ShetechProfile> {
             label: 'home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_sharp),
             label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_3_rounded),
-            label: 'profile',
           ),
         ],
       ),

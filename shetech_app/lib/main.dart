@@ -12,6 +12,7 @@ import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
 import 'calendar.dart';
+import 'learners/courses-list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,8 +33,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/splash',
       routes: {
-        '/': (context) => HomeScreen(),
-        '/splash': (context) => SplashScreen(),
+        '/': (context) =>const HomeScreen(),
+        '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
         '/instructor/course-list': (context) => const CourseListPage(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
-        '/calendar': (context) => const CalendarPageScreen()
+        '/calendar': (context) => const CalendarPageScreen(),
+        '/learners/course-list': (context) => const CourseListPageScreen()
       },
     );
   }

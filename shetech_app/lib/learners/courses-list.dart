@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shetech_app/instructor/db_page.dart';
 import 'package:shetech_app/instructor/frontend_page.dart';
-import 'ml_page.dart';
-import 'html_page.dart';
-import 'popups.dart';
 
-class CourseListPage extends StatelessWidget {
-  const CourseListPage({super.key});
+import 'package:shetech_app/instructor/ml_page.dart';
+import 'package:shetech_app/instructor/html_page.dart';
+
+
+class CourseListPageScreen extends StatelessWidget {
+  const CourseListPageScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,38 +121,6 @@ class CourseListPage extends StatelessWidget {
               ),
             ),
 
-            // Buttons at the bottom
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Show first popup when "Add new course" is pressed
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => const AddCoursePopup1(),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    foregroundColor: Theme.of(context).primaryColor,
-                    side: const BorderSide(
-                      color: Color.fromARGB(255, 157, 78, 221), // Purple border color
-                      width: 2, // Border width
-                    ),
-                  ),
-                  child: const Text('Add new course'),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('Manage courses'),
-                ),
-              ],
-            ),
           ],
         ),
       ),

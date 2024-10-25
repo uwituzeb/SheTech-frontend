@@ -79,7 +79,7 @@ class _BookingScreenState extends State<BookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Banner image (use Image.asset for local image)
-                Image.asset('assets/images/event.jpeg',
+                Image.asset('images/event.jpeg',
                     height: 200, width: 450, fit: BoxFit.cover),
                 const SizedBox(height: 16),
                 // Motivational Quote

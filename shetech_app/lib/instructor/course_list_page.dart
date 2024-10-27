@@ -5,8 +5,15 @@ import 'ml_page.dart';
 import 'html_page.dart';
 import 'popups.dart';
 
-class CourseListPage extends StatelessWidget {
+class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
+
+  @override
+  CourseListPageState createState() => CourseListPageState();
+}
+
+class CourseListPageState extends State<CourseListPage> {
+  bool isEditing = false; // State for managing edit mode
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +58,13 @@ class CourseListPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const HtmlPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/html.jpg',
                       title: 'Introduction to HTML',
                       instructor: 'Samule Doe',
                       students: '4k student',
                       rating: 4.7,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 2
@@ -68,12 +76,13 @@ class CourseListPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const MlPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/ml.jpg',
                       title: 'Machine Learning',
                       instructor: 'Sarrah Morry',
                       students: '2k student',
                       rating: 4.0,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 3
@@ -85,12 +94,13 @@ class CourseListPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const FrontEndPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/front-end.jpg',
                       title: 'Front-end Development',
                       instructor: 'Sarrah Morry',
                       students: '1k student',
                       rating: 4.2,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 4
@@ -102,12 +112,13 @@ class CourseListPage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const DbPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/database.jpg',
                       title: 'Database normalization',
                       instructor: 'Sarrah Morry',
                       students: '2k student',
                       rating: 4.0,
+                      isEditing: isEditing,
                     ),
                   ),
                 ],
@@ -137,7 +148,11 @@ class CourseListPage extends StatelessWidget {
                   child: const Text('Add new course'),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isEditing = !isEditing; // Toggle editing mode
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 157, 78, 221),
                     foregroundColor: Colors.white,
@@ -160,6 +175,7 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
+  final bool isEditing; // State for managing edit mode
 
   const CourseItem({super.key, 
     required this.imageUrl,
@@ -167,6 +183,7 @@ class CourseItem extends StatelessWidget {
     required this.instructor,
     required this.students,
     required this.rating,
+    required this.isEditing,
   });
 
   @override
@@ -191,7 +208,18 @@ class CourseItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  isEditing 
+                    ? TextField(
+                        decoration: InputDecoration(
+                          hintText: title,
+                          contentPadding: const EdgeInsets.all(8.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(color: Colors.purple),
+                          ),
+                        ),
+                      )
+                  : Text(
                     title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -214,6 +242,8 @@ class CourseItem extends StatelessWidget {
                 ],
               ),
             ),
+
+            if (isEditing) const Icon(Icons.edit, size: 20),
           ],
         ),
       ),

@@ -90,7 +90,7 @@ The App includes the following routes:
 ```
 
 routes: {
-'/': (context) =>const HomeScreen(),
+'/home': (context) =>const HomeScreen(),
 '/splash': (context) => const SplashScreen(),
 '/welcome': (context) => const WelcomeScreen(),
 '/signup': (context) => const SignupScreen(),

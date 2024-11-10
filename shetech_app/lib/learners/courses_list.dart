@@ -30,7 +30,7 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
 
   int _getIndexFromRoute(String? route) {
     switch (route) {
-      case '/':
+      case '/home':
         return 0;
       case '/courses':
         return 1;
@@ -48,12 +48,12 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
       _selectedIndex = index;
     });
 
-    String currentRoute = ModalRoute.of(context)?.settings.name ?? '/';
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? '/home';
     String targetRoute;
 
     switch (index) {
       case 0:
-        targetRoute = '/';
+        targetRoute = '/home';
         break;
       case 1:
         targetRoute = '/courses';
@@ -65,7 +65,7 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
         targetRoute = '/settings';
         break;
       default:
-        targetRoute = '/';
+        targetRoute = '/home';
     }
 
     if (currentRoute != targetRoute) {
@@ -86,7 +86,7 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
           setState(() {
             _selectedIndex = 0;
           });
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushReplacementNamed(context, '/home');
           return false;
         }
         return true;

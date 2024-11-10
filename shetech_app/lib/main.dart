@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shetech_app/firebase_options.dart';
 import 'splash/splash.dart';
 import 'authentication/signup_screen.dart';
 import 'authentication/login_screen.dart';
@@ -14,7 +17,9 @@ import 'settings/settings.dart';
 import 'events/calendar.dart';
 import 'learners/courses_list.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/splash',
       routes: {
-        '/': (context) =>const HomeScreen(),
+        '/home': (context) => const HomeScreen(),
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -51,6 +56,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-

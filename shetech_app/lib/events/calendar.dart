@@ -49,7 +49,7 @@ class _CalendarPageState extends State<CalendarPageScreen> {
 
       switch (index) {
         case 0: // Home
-          Navigator.pushReplacementNamed(context, '/');
+          Navigator.pushReplacementNamed(context, '/home');
           break;
         case 1: // Courses
           Navigator.pushReplacementNamed(context, '/courses');

@@ -24,7 +24,7 @@ class _CourseListPageState extends State<CourseListPage> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1: // Calendar
         Navigator.pushReplacementNamed(context, '/courses');

@@ -39,10 +39,10 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
     switch (index) {
       case 0: // Home
-        // Add navigation to Home Screen if needed
+      // Add navigation to Home Screen if needed
         break;
       case 1: // Calendar
-        // Add navigation to Calendar Screen if needed
+      // Add navigation to Calendar Screen if needed
         break;
       case 2: // Settings
         Navigator.push(
@@ -51,7 +51,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
         );
         break;
       case 3: // Profile
-        // Add navigation to Profile Screen if needed
+      // Add navigation to Profile Screen if needed
         break;
     }
   }
@@ -179,60 +179,60 @@ class _ShetechProfileState extends State<ShetechProfile> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Text(
-                      'Name',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'Eliane',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Name',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black,
                           ),
                         ),
                         const SizedBox(
-                          width: 16,
+                          height: 8,
                         ),
-                        Expanded(
-                            child: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey[300]!,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey[300]!,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelText: 'Eliane',
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[400],
+                                    )),
                               ),
-                              labelText: 'Munezero',
-                              labelStyle: TextStyle(
-                                color: Colors.grey[400],
-                              )),
-                        ))
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey[300]!,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      labelText: 'Munezero',
+                                      labelStyle: TextStyle(
+                                        color: Colors.grey[400],
+                                      )),
+                                ))
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                )),
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -255,18 +255,18 @@ class _ShetechProfileState extends State<ShetechProfile> {
                         children: [
                           Expanded(
                               child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: ' Eliane@Gmail.com',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                )),
-                          ))
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey[300]!,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelText: ' Eliane@Gmail.com',
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[400],
+                                    )),
+                              ))
                         ],
                       )
                     ],
@@ -294,18 +294,18 @@ class _ShetechProfileState extends State<ShetechProfile> {
                         children: [
                           Expanded(
                               child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: '@ElianeMunezero',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                )),
-                          ))
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.grey[300]!,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    labelText: '@ElianeMunezero',
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey[400],
+                                    )),
+                              ))
                         ],
                       )
                     ],

@@ -26,6 +26,8 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Image.asset(
                 'images/img.jpg',
+                width: 250,
+                height: 250,
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 20),

@@ -55,6 +55,10 @@ flutter:
   assets:
     - images/img.jpg
     - images/google.png
+    - images/database.jpg
+    - images/front-end.jpg
+    - images/html.jpg
+    - images/ml.jpg
   fonts:
   - family: Outfit
     fonts:

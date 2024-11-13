@@ -6,6 +6,10 @@ import 'forgot_password_screen.dart';
 import 'welcome_screen.dart';
 import 'reset_password.dart';
 import 'create_password.dart';
+import 'instructor/course_list_page.dart';
+import 'settings/profile.dart';
+import 'settings/settings.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -24,17 +28,22 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      initialRoute: '/splash',
       routes: {
-        '/': (context) => SplashScreen(),
+        '/splash': (context) => SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/create-password': (context) => const CreatePasswordScreen(),
+        '/instructor/course-list': (context) => const CourseListPage(),
+        '/profile': (context) => const ShetechProfile(),
+        '/settings': (context) => const SettingScreen(),
       },
     );
   }
 }
+
+
 

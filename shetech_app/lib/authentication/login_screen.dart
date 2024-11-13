@@ -11,6 +11,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+  final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String _errorMessage = '';
 
@@ -84,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
+            child: Form(
+              key: _formKey,
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -200,7 +203,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                if (_errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
               ],
+            ),
             ),
           ),
         ),
@@ -215,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
     VoidCallback? onVisibilityChanged,
     TextEditingController? controller,
   }) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       obscureText: isPassword && !(isPasswordVisible ?? false),
       decoration: InputDecoration(

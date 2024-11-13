@@ -40,14 +40,14 @@ class _SignupScreenState extends State<SignupScreen> {
     });
 
     try {
-      await _authService.signUpWithEmail(
+      final userCredential = await _authService.signUpWithEmail(
         email: _emailController.text.trim(),
         password: _passwordController.text,
         name: _nameController.text.trim(),
       );
       
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
+      if (userCredential != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
       }
     } catch (e) {
       setState(() {
@@ -202,6 +202,18 @@ class _SignupScreenState extends State<SignupScreen> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
                   ),
                 ),
+                if (_errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
 
                 
               ],

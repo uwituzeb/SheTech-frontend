@@ -71,23 +71,23 @@ class AuthService {
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
-        return 'The password provided is too weak.';
+        return 'The password provided is too weak';
       case 'email-already-in-use':
-        return 'An account already exists for that email.';
+        return 'An account already exists for that email';
       case 'invalid-email':
         return 'The email address is not valid.';
       case 'operation-not-allowed':
-        return 'Email/password accounts are not enabled.';
+        return 'Email/password accounts are not enabled';
       case 'user-disabled':
-        return 'This user account has been disabled.';
+        return 'This user account has been disabled';
       case 'user-not-found':
-        return 'No user found for that email.';
+        return 'No user found for that email';
       case 'wrong-password':
-        return 'Wrong password provided.';
+        return 'Wrong password provided';
       case 'invalid-credential':
-        return 'The credential is malformed or expired.';
+        return 'Invalid credential';
       case 'account-exists-with-different-credential':
-        return 'An account already exists with the same email address but different sign-in credentials.';
+        return 'An account already exists with the same email address but different sign-in credentials';
       default:
         return 'An error occurred. Please try again. (${e.code})';
     }

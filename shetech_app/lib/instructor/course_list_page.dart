@@ -39,6 +39,19 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 
   @override
+  CourseListPageState createState() => CourseListPageState();
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+}
+
+class CourseListPageState extends State<CourseListPage> {
+  bool isEditing = false; // State for managing edit mode
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -87,12 +100,13 @@ class _CourseListPageState extends State<CourseListPage> {
                         MaterialPageRoute(builder: (context) => const HtmlPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/html.jpg',
                       title: 'Introduction to HTML',
                       instructor: 'Samule Doe',
                       students: '4k student',
                       rating: 4.7,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 2
@@ -104,12 +118,13 @@ class _CourseListPageState extends State<CourseListPage> {
                         MaterialPageRoute(builder: (context) => const MlPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/ml.jpg',
                       title: 'Machine Learning',
                       instructor: 'Sarrah Morry',
                       students: '2k student',
                       rating: 4.0,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 3
@@ -121,12 +136,13 @@ class _CourseListPageState extends State<CourseListPage> {
                         MaterialPageRoute(builder: (context) => const FrontEndPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/front-end.jpg',
                       title: 'Front-end Development',
                       instructor: 'Sarrah Morry',
                       students: '1k student',
                       rating: 4.2,
+                      isEditing: isEditing,
                     ),
                   ),
                   // Course 4
@@ -138,12 +154,13 @@ class _CourseListPageState extends State<CourseListPage> {
                         MaterialPageRoute(builder: (context) => const DbPage()),
                       );
                     },
-                    child: const CourseItem(
+                    child: CourseItem(
                       imageUrl: 'images/database.jpg',
                       title: 'Database normalization',
                       instructor: 'Sarrah Morry',
                       students: '2k student',
                       rating: 4.0,
+                      isEditing: isEditing,
                     ),
                   ),
                 ],
@@ -173,7 +190,11 @@ class _CourseListPageState extends State<CourseListPage> {
                   child: const Text('Add new course'),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isEditing = !isEditing; // Toggle editing mode
+                    });
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
@@ -186,34 +207,18 @@ class _CourseListPageState extends State<CourseListPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
-        unselectedItemColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_sharp),
-            label: 'calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'settings',
-          ),
+        currentIndex: 0,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Calendar'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
   }
 }
+
 
 
   
@@ -225,6 +230,7 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
+  final bool isEditing; // State for managing edit mode
 
   const CourseItem({super.key, 
     required this.imageUrl,
@@ -232,6 +238,7 @@ class CourseItem extends StatelessWidget {
     required this.instructor,
     required this.students,
     required this.rating,
+    required this.isEditing,
   });
 
   @override
@@ -256,7 +263,18 @@ class CourseItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  isEditing 
+                    ? TextField(
+                        decoration: InputDecoration(
+                          hintText: title,
+                          contentPadding: const EdgeInsets.all(8.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: const BorderSide(color: Colors.purple),
+                          ),
+                        ),
+                      )
+                  : Text(
                     title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -279,6 +297,8 @@ class CourseItem extends StatelessWidget {
                 ],
               ),
             ),
+
+            if (isEditing) const Icon(Icons.edit, size: 20),
           ],
         ),
       ),

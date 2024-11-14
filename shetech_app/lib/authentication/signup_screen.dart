@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shetech_app/authentication/auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -8,9 +10,82 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _authService = AuthService();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  bool _isLoading = false;
+  String _errorMessage = '';
 
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose(){
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignUp() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      final userCredential = await _authService.signUpWithEmail(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        name: _nameController.text.trim(),
+      );
+      
+      if (userCredential != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      if (userCredential != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
@@ -20,7 +95,9 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Center(child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: Column(
+            child: Form(
+              key: _formKey,
+              child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -40,9 +117,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   
                 ),
                 const SizedBox(height: 32),
-                _buildTextField('Enter Your Name'),
+                _buildTextField('Enter Your Name', controller: _nameController),
                 const SizedBox(height: 16),
-                _buildTextField('Enter Your Email'),
+                _buildTextField('Enter Your Email', controller: _emailController),
                 const SizedBox(height: 16),
                 _buildTextField(
                   'Enter Password',
@@ -53,6 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       _isPasswordVisible = !_isPasswordVisible;
                     });
                   },
+                  controller: _passwordController,
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
@@ -64,10 +142,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
                     });
                   },
+                  controller: _confirmPasswordController,
                 ),
                 const SizedBox(height: 32.0),
                 ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/login'),
+                  onPressed: _handleSignUp,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple[50],
                     foregroundColor: Theme.of(context).primaryColor,
@@ -83,7 +162,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 16.0,),
-                ElevatedButton(onPressed: (){}, 
+                ElevatedButton(onPressed: _handleGoogleSignIn, 
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   backgroundColor: Colors.grey[300],
@@ -123,9 +202,22 @@ class _SignupScreenState extends State<SignupScreen> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),
                   ),
                 ),
+                if (_errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
 
                 
               ],
+            ),
             ),
           ),
         ),),
@@ -138,8 +230,10 @@ class _SignupScreenState extends State<SignupScreen> {
     bool isPassword = false,
     bool? isPasswordVisible,
     VoidCallback? onVisibilityChanged,
+    TextEditingController? controller,
   }) {
-    return TextField(
+    return TextFormField(
+      controller: controller,
       obscureText: isPassword && !(isPasswordVisible ?? false),
       decoration: InputDecoration(
         hintText: hint,

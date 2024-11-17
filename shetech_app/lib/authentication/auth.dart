@@ -68,6 +68,45 @@ class AuthService {
     }
   }
 
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    try{
+      final actionCodeSettings = ActionCodeSettings(
+        url: 'https://shetechapp.page.link/reset?mode=resetPassword',
+        handleCodeInApp: true,
+        androidPackageName: 'shetech.example.app',
+        androidInstallApp: true,
+        androidMinimumVersion: '1',
+        iOSBundleId: 'com.example.shetechApp',
+      );
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: email,
+        actionCodeSettings: actionCodeSettings,
+      );
+
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw 'An unexpected error occurred during reset password';
+    }
+  }
+
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) async {
+    try {
+      await _auth.confirmPasswordReset(
+        code: code,
+        newPassword: newPassword,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    } catch (e) {
+      throw 'An unexpected error occurred during password reset';
+    }
+  }
+
+
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
@@ -88,6 +127,10 @@ class AuthService {
         return 'Invalid credential';
       case 'account-exists-with-different-credential':
         return 'An account already exists with the same email address but different sign-in credentials';
+      case 'expired-action-code':
+        return 'The password reset link has expired';
+      case 'invalid-action-code':
+        return 'The password reset link is invalid';
       default:
         return 'An error occurred. Please try again. (${e.code})';
     }

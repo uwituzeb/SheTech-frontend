@@ -61,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 32.0),
                 ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/instructor/course-list'),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, '/instructor/course-list'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple[50],
                     foregroundColor: Theme.of(context).primaryColor,

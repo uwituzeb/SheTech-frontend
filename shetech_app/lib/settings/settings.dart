@@ -20,19 +20,17 @@ class _SettingScreenState extends State<SettingScreen> {
 
     switch (index) {
       case 0: // Home
-      // Add navigation to Home Screen if needed
+        // Add navigation to Home Screen if needed
         break;
       case 1: // Calendar
-      // Add navigation to Calendar Screen if needed
+        // Add navigation to Calendar Screen if needed
         break;
       case 2: // Setting
         break;
       case 3: // Profile
         Navigator.pop(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ShetechProfile(currentIndex: _selectedIndex)),
+          MaterialPageRoute(builder: (context) => const ShetechProfile()),
         );
         break;
     }

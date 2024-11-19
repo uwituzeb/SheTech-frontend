@@ -133,7 +133,7 @@ Contributions are welcome! If you want to contribute, please follow these steps:
 2. Eliane Munezero
 3. Gentille Umutoni
 4. Kangabire Muhoza Merveille
-5. Cynthia Uwase
+5. Mpano Umumararungu Cynthia
 
 
 

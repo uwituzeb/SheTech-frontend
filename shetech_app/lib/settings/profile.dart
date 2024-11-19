@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
@@ -71,6 +71,8 @@ class _ShetechProfileState extends State<ShetechProfile> {
           _emailController.text = userData?['email'] ?? '';
           _usernameController.text = userData?['username'] ?? '';
         });
+      } else {
+        print('User document not found');
       }
     }
   }
@@ -94,6 +96,15 @@ class _ShetechProfileState extends State<ShetechProfile> {
         Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _usernameController.dispose();
+    super.dispose();
   }
 
   @override

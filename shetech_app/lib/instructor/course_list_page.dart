@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shetech_app/instructor/db_page.dart';
 import 'package:shetech_app/instructor/frontend_page.dart';
+import 'package:shetech_app/settings/profile.dart';
 import 'ml_page.dart';
 import 'html_page.dart';
 import 'popups.dart';
@@ -14,8 +15,14 @@ class CourseListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('SheTech', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 157, 78, 221),
-        actions: const [
-          Icon(Icons.person), // User profile icon
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ShetechProfile()));
+            },
+          ), // User profile icon
         ],
       ),
       body: Padding(
@@ -48,7 +55,8 @@ class CourseListPage extends StatelessWidget {
                       // Navigate to the lesson page when the first course is clicked
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HtmlPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const HtmlPage()),
                       );
                     },
                     child: const CourseItem(
@@ -82,7 +90,8 @@ class CourseListPage extends StatelessWidget {
                       // Navigate to the lesson page when the first course is clicked
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const FrontEndPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const FrontEndPage()),
                       );
                     },
                     child: const CourseItem(
@@ -123,14 +132,16 @@ class CourseListPage extends StatelessWidget {
                     // Show first popup when "Add new course" is pressed
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => const AddCoursePopup1(),
+                      builder: (BuildContext context) =>
+                          const AddCoursePopup1(),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     foregroundColor: const Color.fromARGB(255, 157, 78, 221),
                     side: const BorderSide(
-                      color: Color.fromARGB(255, 157, 78, 221), // Purple border color
+                      color: Color.fromARGB(
+                          255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
                     ),
                   ),
@@ -161,7 +172,8 @@ class CourseItem extends StatelessWidget {
   final String students;
   final double rating;
 
-  const CourseItem({super.key, 
+  const CourseItem({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.instructor,

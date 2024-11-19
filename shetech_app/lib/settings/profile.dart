@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,27 +12,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shetech',
+      title: 'SheTech',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const ShetechProfile(),
       routes: {
-        // Uncomment and define these screens if needed
-        // '/home': (context) => HomeScreen(),
-        // '/courses': (context) => CoursesScreen(),
-        // '/calendar': (context) => CalendarScreen(),
-        '/settings': (context) => const SettingScreen(),
-        '/profile': (context) => const ShetechProfile(),
+        '/home': (context) =>
+            const Placeholder(), // Replace with actual Home Screen
+        '/courses': (context) =>
+            const Placeholder(), // Replace with actual Courses Screen
+        '/calendar': (context) =>
+            const Placeholder(), // Replace with actual Calendar Screen
+        '/settings': (context) =>
+            const Placeholder(), // Replace with actual Settings Screen
       },
     );
   }
 }
 
 class ShetechProfile extends StatefulWidget {
-  final int? currentIndex;
-
-  const ShetechProfile({super.key, this.currentIndex});
+  const ShetechProfile({super.key});
 
   @override
   State<ShetechProfile> createState() => _ShetechProfileState();
@@ -43,11 +42,11 @@ class _ShetechProfileState extends State<ShetechProfile> {
   int _selectedIndex = 3;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   User? currentUser;
   Map<String, dynamic>? userData;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
@@ -60,19 +59,26 @@ class _ShetechProfileState extends State<ShetechProfile> {
   Future<void> fetchUserData() async {
     currentUser = _auth.currentUser;
     if (currentUser != null) {
-      DocumentSnapshot<Map<String, dynamic>> userDoc =
-          await _firestore.collection('users').doc(currentUser!.uid).get();
+      try {
+        DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _firestore.collection('users').doc(currentUser!.uid).get();
 
-      if (userDoc.exists) {
-        setState(() {
-          userData = userDoc.data();
-          _firstNameController.text = userData?['firstName'] ?? '';
-          _lastNameController.text = userData?['lastName'] ?? '';
-          _emailController.text = userData?['email'] ?? '';
-          _usernameController.text = userData?['username'] ?? '';
-        });
-      } else {
-        print('User document not found');
+        if (userDoc.exists) {
+          setState(() {
+            userData = userDoc.data();
+            _nameController.text = userData?['name'] ?? '';
+            _emailController.text = userData?['email'] ?? '';
+            _usernameController.text = userData?['username'] ?? '';
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('User document not found.')),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error fetching user data: $e')),
+        );
       }
     }
   }
@@ -83,16 +89,16 @@ class _ShetechProfileState extends State<ShetechProfile> {
     });
 
     switch (index) {
-      case 0: // Home
+      case 0:
         Navigator.pushReplacementNamed(context, '/home');
         break;
-      case 1: // Courses
+      case 1:
         Navigator.pushReplacementNamed(context, '/courses');
         break;
-      case 2: // Calendar
+      case 2:
         Navigator.pushReplacementNamed(context, '/calendar');
         break;
-      case 3: // Settings
+      case 3:
         Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
@@ -100,8 +106,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
     super.dispose();
@@ -112,7 +117,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+        title: const Text('SheTech'),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
@@ -130,7 +135,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
             children: [
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 20.0),
-                padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 224, 223, 223),
                   borderRadius: BorderRadius.circular(10),
@@ -143,326 +148,139 @@ class _ShetechProfileState extends State<ShetechProfile> {
                     ),
                   ],
                 ),
-                child: Stack(
-                  alignment: Alignment.bottomRight,
+                child: Row(
                   children: [
-                    Row(
+                    ClipOval(
+                      child: Image.network(
+                        'https://pluspng.com/img-png/women-hd-png-woman-white-background-free-picture-3397.jpg',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipOval(
-                          child: Image.network(
-                            'https://pluspng.com/img-png/women-hd-png-woman-white-background-free-picture-3397.jpg',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
+                        Text(
+                          userData?['name'] ?? 'No name',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Colors.black,
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              userData?['name'] ?? 'No name',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontFamily: 'Plus Jakarta Sans',
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              userData?['role'] ?? 'Student',
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 8),
+                        Text(
+                          userData?['role'] ?? 'Student',
+                          style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 4,
-                              spreadRadius: 1,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Name',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'First Name',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'Last Name',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Email Address',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'Eliane@Gmail.com',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Username',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: '@ElianeMunezero',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                width: 250,
-                height: 60,
-                child: TextButton(
-                  onPressed: () {
-                    // Handle change password logic
-                  },
-                  child: const Text(
-                    'Change Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
+              _buildProfileField('Name', _nameController),
+              _buildProfileField('Email Address', _emailController),
+              _buildProfileField('Username', _usernameController),
+              const SizedBox(height: 20),
+              _buildActionButton('Change Password', Colors.grey, () {
+                // Handle change password
+              }),
               const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                width: 250,
-                height: 60,
-                child: TextButton(
-                  onPressed: () async {
-                    // Check if the user is logged in
-                    if (currentUser != null) {
-                      // Update the user data in Firestore
-                      await _firestore
-                          .collection('users')
-                          .doc(currentUser!.uid)
-                          .set(
-                              {
-                            'firstName': _firstNameController.text,
-                            'lastName': _lastNameController.text,
-                            'email': _emailController.text,
-                            'username': _usernameController.text,
-                          },
-                              SetOptions(
-                                  merge:
-                                      true)); // Use merge to update only the fields that have changed
+              _buildActionButton('Save Changes', Theme.of(context).primaryColor,
+                  () async {
+                if (currentUser != null) {
+                  await _firestore
+                      .collection('users')
+                      .doc(currentUser!.uid)
+                      .set(
+                    {
+                      'name': _nameController.text,
+                      'email': _emailController.text,
+                      'username': _usernameController.text,
+                    },
+                    SetOptions(merge: true),
+                  );
 
-                      // Optionally show a success message or feedback to the user
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Profile updated successfully!')),
-                      );
-                    } else {
-                      // Handle the case when the user is not logged in
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('User  not logged in.')),
-                      );
-                    }
-                  },
-                  child: const Text(
-                    'Save Changes',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Profile updated successfully!')),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('User not logged in.')),
+                  );
+                }
+              }),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
+              icon: Icon(Icons.menu_book), label: 'Courses'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today_sharp), label: 'Calendar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Settings'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'courses',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_sharp),
-            label: 'calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'settings',
+          const SizedBox(height: 8),
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(String text, Color color, VoidCallback onPressed) {
+    return Container(
+      width: 250,
+      height: 50,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 16, color: Colors.white),
+        ),
       ),
     );
   }

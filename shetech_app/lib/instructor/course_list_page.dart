@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shetech_app/instructor/db_page.dart';
 import 'package:shetech_app/instructor/frontend_page.dart';
+import 'package:shetech_app/settings/profile.dart';
 import 'ml_page.dart';
 import 'html_page.dart';
 import 'popups.dart';
-
-
 
 class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
@@ -43,17 +42,17 @@ class _CourseListPageState extends State<CourseListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-          backgroundColor: Theme.of(context).primaryColor,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
+        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -84,7 +83,8 @@ class _CourseListPageState extends State<CourseListPage> {
                       // Navigate to the lesson page when the first course is clicked
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HtmlPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const HtmlPage()),
                       );
                     },
                     child: const CourseItem(
@@ -118,7 +118,8 @@ class _CourseListPageState extends State<CourseListPage> {
                       // Navigate to the lesson page when the first course is clicked
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const FrontEndPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const FrontEndPage()),
                       );
                     },
                     child: const CourseItem(
@@ -159,14 +160,16 @@ class _CourseListPageState extends State<CourseListPage> {
                     // Show first popup when "Add new course" is pressed
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => const AddCoursePopup1(),
+                      builder: (BuildContext context) =>
+                          const AddCoursePopup1(),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     foregroundColor: Theme.of(context).primaryColor,
                     side: const BorderSide(
-                      color: Color.fromARGB(255, 157, 78, 221), // Purple border color
+                      color: Color.fromARGB(
+                          255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
                     ),
                   ),
@@ -215,9 +218,6 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 }
 
-
-  
-
 // Widget to represent each course item
 class CourseItem extends StatelessWidget {
   final String imageUrl;
@@ -226,7 +226,8 @@ class CourseItem extends StatelessWidget {
   final String students;
   final double rating;
 
-  const CourseItem({super.key, 
+  const CourseItem({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.instructor,

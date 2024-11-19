@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,6 +32,41 @@ class ShetechProfile extends StatefulWidget {
 
 class _ShetechProfileState extends State<ShetechProfile> {
   int _selectedIndex = 3;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? currentUser;
+  Map<String, dynamic>? userData;
+
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+          await _firestore.collection('users').doc(currentUser!.uid).get();
+
+      if (userDoc.exists) {
+        setState(() {
+          userData = userDoc.data();
+          _firstNameController.text = userData?['firstName'] ?? '';
+          _lastNameController.text = userData?['lastName'] ?? '';
+          _emailController.text = userData?['email'] ?? '';
+          _usernameController.text = userData?['username'] ?? '';
+        });
+      } else {
+        print('User document not found');
+      }
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,6 +75,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
     switch (index) {
       case 0: // Home
+        Navigator.pushReplacementNamed(context, '/home');
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1: // Calendar
@@ -53,29 +91,38 @@ class _ShetechProfileState extends State<ShetechProfile> {
   }
 
   @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _usernameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-          backgroundColor: Theme.of(context).primaryColor,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
+        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Center the Column
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: 20.0), // Add margin to separate from app bar
+                margin: const EdgeInsets.symmetric(vertical: 20.0),
                 padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 224, 223, 223),
@@ -102,24 +149,23 @@ class _ShetechProfileState extends State<ShetechProfile> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(
-                            width: 16), // Space between image and text
-                        const Column(
+                        const SizedBox(width: 16),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Eliane Munezero',
-                              style: TextStyle(
+                              userData?['name'] ?? 'No name',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
                                 color: Colors.black,
                                 fontFamily: 'Plus Jakarta Sans',
                               ),
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text(
-                              'Instructor',
-                              style: TextStyle(
+                              userData?['role'] ?? 'Student',
+                              style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
@@ -131,10 +177,10 @@ class _ShetechProfileState extends State<ShetechProfile> {
                       bottom: 0,
                       right: 0,
                       child: Container(
-                        padding: const EdgeInsets.all(4.0), // Optional padding
+                        padding: const EdgeInsets.all(4.0),
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle, // Circular background
-                          color: Colors.white, // Background color
+                          shape: BoxShape.circle,
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.2),
@@ -146,8 +192,8 @@ class _ShetechProfileState extends State<ShetechProfile> {
                         ),
                         child: const Icon(
                           Icons.camera_alt,
-                          size: 30, // Size of the icon
-                          color: Colors.black, // Color of the icon
+                          size: 30,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -157,61 +203,61 @@ class _ShetechProfileState extends State<ShetechProfile> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Text(
-                      'Name',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 10),
+                      const Text(
+                        'Name',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _firstNameController,
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.grey[300]!,
                                   ),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                labelText: 'Eliane',
+                                labelText: 'First Name',
                                 labelStyle: TextStyle(
                                   color: Colors.grey[400],
-                                )),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        Expanded(
-                            child: TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey[300]!,
                                 ),
-                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                              labelText: 'Munezero',
-                              labelStyle: TextStyle(
-                                color: Colors.grey[400],
-                              )),
-                        ))
-                      ],
-                    )
-                  ],
-                )),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextField(
+                              controller: _lastNameController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                labelText: 'Last Name',
+                                labelStyle: TextStyle(
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -219,9 +265,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      const SizedBox(height: 16),
                       const Text(
                         'Email Address',
                         style: TextStyle(
@@ -233,21 +277,24 @@ class _ShetechProfileState extends State<ShetechProfile> {
                       Row(
                         children: [
                           Expanded(
-                              child: TextField(
-                            decoration: InputDecoration(
+                            child: TextField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.grey[300]!,
                                   ),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                labelText: ' Eliane@Gmail.com',
+                                labelText: 'Eliane@Gmail.com',
                                 labelStyle: TextStyle(
                                   color: Colors.grey[400],
-                                )),
-                          ))
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -258,9 +305,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      const SizedBox(height: 16),
                       const Text(
                         'Username',
                         style: TextStyle(
@@ -272,8 +317,9 @@ class _ShetechProfileState extends State<ShetechProfile> {
                       Row(
                         children: [
                           Expanded(
-                              child: TextField(
-                            decoration: InputDecoration(
+                            child: TextField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.grey[300]!,
@@ -283,10 +329,12 @@ class _ShetechProfileState extends State<ShetechProfile> {
                                 labelText: '@ElianeMunezero',
                                 labelStyle: TextStyle(
                                   color: Colors.grey[400],
-                                )),
-                          ))
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -309,7 +357,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                 height: 60,
                 child: TextButton(
                   onPressed: () {
-                    // Handle button press
+                    // Handle change password logic
                   },
                   child: const Text(
                     'Change Password',
@@ -326,6 +374,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
@@ -339,14 +388,42 @@ class _ShetechProfileState extends State<ShetechProfile> {
                 width: 250,
                 height: 60,
                 child: TextButton(
-                  onPressed: () {
-                    // Handle button press
+                  onPressed: () async {
+                    // Check if the user is logged in
+                    if (currentUser != null) {
+                      // Update the user data in Firestore
+                      await _firestore
+                          .collection('users')
+                          .doc(currentUser!.uid)
+                          .set(
+                              {
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'email': _emailController.text,
+                            'username': _usernameController.text,
+                          },
+                              SetOptions(
+                                  merge:
+                                      true)); // Use merge to update only the fields that have changed
+
+                      // Optionally show a success message or feedback to the user
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Profile updated successfully!')),
+                      );
+                    } else {
+                      // Handle the case when the user is not logged in
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('User  not logged in.')),
+                      );
+                    }
                   },
                   child: const Text(
                     'Save Changes',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
+                      color: Colors.white,
                       color: Colors.white,
                     ),
                   ),
@@ -358,6 +435,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
         selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
@@ -367,6 +445,10 @@ class _ShetechProfileState extends State<ShetechProfile> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),

@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle({String role = 'learner'}) async {
     try {
       // Sign in with Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -31,15 +33,47 @@ class AuthService {
     required String email,
     required String password,
     required String name,
+    String role = 'learner',
   }) async {
     try {
       // Create a new user with email and password
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      await _saveUserRole(
+        userCredential.user?.uid, 
+        role, 
+        userCredential.user?.displayName, 
+        userCredential.user?.email
+      );
+
       await userCredential.user?.updateDisplayName(name);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
+    } catch (e) {
+      throw 'An unexpected error occurred during Google Sign In';
+    }
+  }
+
+  Future<void> _saveUserRole(
+    String? uid, 
+    String role, 
+    String? name, 
+    String? email
+  ) async {
+    if (uid == null) return;
+
+    try {
+      await _firestore.collection('users').doc(uid).set({
+        'uid': uid,
+        'name': name,
+        'email': email,
+        'role': role,
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print('Error saving user role: $e');
     }
   }
 

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "71036710855",
+    "project_id": "shetech-d61dd",
+    "storage_bucket": "shetech-d61dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71036710855:android:c626b7da52b9e3188133e2",
+        "android_client_info": {
+          "package_name": "shetech.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71036710855-t0v0tpt0mpl782mv3eit5bgjfguegh1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "shetech.example.app",
+            "certificate_hash": "c8177687908f535dd8319d2dca57ce27c19c1ca5"
+          }
+        },
+        {
+          "client_id": "71036710855-p80v3u614542php3if0qliljp241c0gj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwSzM9soHeOVNwWd5aUizJmwEHmngqjdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71036710855-p80v3u614542php3if0qliljp241c0gj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "71036710855-dvtesc5n8mdlu8o4m18nvp3o5vnt7if6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shetechApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

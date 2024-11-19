@@ -1,28 +1,53 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'splash.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'forgot_password_screen.dart';
-import 'welcome_screen.dart';
-import 'reset_password.dart';
-import 'create_password.dart';
+import 'package:shetech_app/firebase_options.dart';
+import 'splash/splash.dart';
+import 'authentication/signup_screen.dart';
+import 'authentication/login_screen.dart';
+import 'authentication/forgot_password_screen.dart';
+import 'splash/welcome_screen.dart';
+import 'authentication/reset_password.dart';
+import 'authentication/create_password.dart';
 import 'homepage.dart';
-import 'eventpage.dart';
+import 'events/eventpage.dart';
 import 'instructor/course_list_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
-import 'calendar.dart';
-import 'learners/courses-list.dart';
+import 'events/calendar.dart';
+import 'learners/courses_list.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final dynamicLinks = FirebaseDynamicLinks.instance;
+  final PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
+  if (initialLink != null) {
+    handleDynamicLink(initialLink.link);
+  }
+
+  dynamicLinks.onLink.listen((dynamicLinkData) {
+    handleDynamicLink(dynamicLinkData.link);
+  }).onError((error) {
+    print('Dynamic Links error: $error');
+  });
+
   runApp(const MyApp());
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'SheTech',
       theme: ThemeData(
@@ -33,7 +58,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/splash',
       routes: {
-        '/': (context) =>const HomeScreen(),
+        '/home': (context) => const HomeScreen(),
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -42,15 +67,24 @@ class MyApp extends StatelessWidget {
         '/reset-password': (context) => const ResetPasswordScreen(),
         '/create-password': (context) => const CreatePasswordScreen(),
         '/book-event': (context) => const BookingScreen(),
-        '/instructor/course-list': (context) => const CourseListPage(),
+        '/instructor/courses': (context) => const CourseListPage(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
         '/calendar': (context) => const CalendarPageScreen(),
-        '/learners/course-list': (context) => const CourseListPageScreen()
+        '/courses': (context) => const CourseListPageScreen()
       },
     );
   }
 }
 
-
-
+void handleDynamicLink(Uri deepLink) {
+  if (deepLink.path == '/reset-password') {
+    final oobCode = deepLink.queryParameters['oobCode'];
+    if (oobCode != null) {
+      GlobalKey<NavigatorState>().currentState?.pushNamed(
+        '/create-password',
+        arguments: oobCode,
+      );
+    }
+  }
+}

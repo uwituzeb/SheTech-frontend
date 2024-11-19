@@ -69,22 +69,72 @@ flutter run
 
 ```
 
+## Project Structure
+
+```
+/lib
+  |-- authentication/          # Authentication i.e signup, login and reset password screens
+  |-- events/              # Events and calendar screens
+  |-- instructor/             # instructor page screens
+  |-- learners/            # learners courses page screen
+  |-- splash/               # splash screen and welcome page widgets
+  |-- settings/               # settings and profile widgets
+  |-- main.dart            # Entry point of the application
+  |-- homepage.dart             # homepage widget
+```
+
 ## App Routes
 
-The App inclues the following routes:
+The App includes the following routes:
 
 ```
 
 routes: {
-  '/splash': (context) => SplashScreen(),
-  '/welcome': (context) => const WelcomeScreen(),
-  '/signup': (context) => const SignupScreen(),
-  '/login': (context) => const LoginScreen(),
-  '/forgot-password': (context) => const ForgotPasswordScreen(),
-  '/reset-password': (context) => const ResetPasswordScreen(),
-  '/create-password': (context) => const CreatePasswordScreen(),
+'/home': (context) =>const HomeScreen(),
+'/splash': (context) => const SplashScreen(),
+'/welcome': (context) => const WelcomeScreen(),
+'/signup': (context) => const SignupScreen(),
+'/login': (context) => const LoginScreen(),
+'/forgot-password': (context) => const ForgotPasswordScreen(),
+'/reset-password': (context) => const ResetPasswordScreen(),
+'/create-password': (context) => const CreatePasswordScreen(),
+'/book-event': (context) => const BookingScreen(),
+'/instructor/courses': (context) => const CourseListPage(),
+'/profile': (context) => const ShetechProfile(),
+'/settings': (context) => const SettingScreen(),
+'/calendar': (context) => const CalendarPageScreen(),
+'/courses': (context) => const CourseListPageScreen()
 },
 
 ```
+
+## Contributing
+
+Contributions are welcome! If you want to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix:
+   
+`git checkout -b feature/your-feature-name`
+
+3. Make your changes and commit them:
+   
+`git commit -m "Add feature: your feature name"`
+
+4. Push to your branch:
+   
+`git push origin feature/your-feature-name`
+
+5. Open a Pull Request.
+
+## TEAM MEMBERS
+
+1. Uwituze Bernice
+2. Eliane Munezero
+3. Gentille Umutoni
+4. Kangabire Muhoza Merveille
+5. Cynthia Uwase
+
+
 
 

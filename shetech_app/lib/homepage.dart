@@ -21,16 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/book-event');
+        Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/settings');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 3: // Profile
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
   }
@@ -47,23 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-        actions: [
-          DropdownButton<String>(
-            dropdownColor: Theme.of(context).primaryColor,
-            value: 'Elliane Munezero',
-            items: <String>['Elliane Munezero'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: const TextStyle(color: Colors.white)),
-              );
-            }).toList(),
-            onChanged: (_) {},
-          ),
-        ],
-        elevation: 0, // Flat design, remove shadow
-      ),
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
+        ),
       body: _pages[_selectedIndex],
 
       // Bottom Navigation Bar 
@@ -80,16 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_sharp),
             label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_3_rounded),
-            label: 'profile',
           ),
         ],
       ),
@@ -137,7 +131,9 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/book-event');
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple, // Set button background color to purple
                     ),

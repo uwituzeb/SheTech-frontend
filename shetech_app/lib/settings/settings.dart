@@ -19,16 +19,16 @@ class _SettingScreenState extends State<SettingScreen> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/calendar');
+        Navigator.pushReplacementNamed(context, '/courses');
         break;
       case 2: // Setting
-        Navigator.pushReplacementNamed(context, '/settings');
+        Navigator.pushReplacementNamed(context, '/calendar');
         break;
       case 3: // Profile
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushReplacementNamed(context, '/settings');
         break;
     }
   }
@@ -38,16 +38,17 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          'Settings',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
         ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -203,16 +204,16 @@ class _SettingScreenState extends State<SettingScreen> {
             label: 'home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_sharp),
             label: 'calendar',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_3_rounded),
-            label: 'profile',
           ),
         ],
       ),

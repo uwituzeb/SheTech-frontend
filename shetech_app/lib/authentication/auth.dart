@@ -69,7 +69,7 @@ class AuthService {
   }
 
   Future<void> sendPasswordResetEmail({required String email}) async {
-    try{
+    try {
       final actionCodeSettings = ActionCodeSettings(
         url: 'https://shetechapp.page.link/reset?mode=resetPassword',
         handleCodeInApp: true,
@@ -82,7 +82,6 @@ class AuthService {
         email: email,
         actionCodeSettings: actionCodeSettings,
       );
-
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } catch (e) {
@@ -105,7 +104,6 @@ class AuthService {
       throw 'An unexpected error occurred during password reset';
     }
   }
-
 
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {

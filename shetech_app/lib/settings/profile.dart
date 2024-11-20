@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +37,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
   User? currentUser;
   Map<String, dynamic>? userData;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
@@ -58,13 +56,12 @@ class _ShetechProfileState extends State<ShetechProfile> {
       if (userDoc.exists) {
         setState(() {
           userData = userDoc.data();
-          _firstNameController.text = userData?['firstName'] ?? '';
-          _lastNameController.text = userData?['lastName'] ?? '';
+          _nameController.text = userData?['name'] ?? '';
           _emailController.text = userData?['email'] ?? '';
           _usernameController.text = userData?['username'] ?? '';
         });
       } else {
-        print('User document not found');
+        print('User  document not found');
       }
     }
   }
@@ -76,7 +73,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1: // Calendar
@@ -93,8 +89,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _usernameController.dispose();
     super.dispose();
@@ -141,15 +136,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                   children: [
                     Row(
                       children: [
-                        ClipOval(
-                          child: Image.network(
-                            'https://pluspng.com/img-png/women-hd-png-woman-white-background-free-picture-3397.jpg',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -158,7 +145,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: Color.fromARGB(255, 41, 41, 41),
                                 fontFamily: 'Plus Jakarta Sans',
                               ),
                             ),
@@ -173,30 +160,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
                         ),
                       ],
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 4,
-                              spreadRadius: 1,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.camera_alt,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -206,7 +169,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 10),
                       const Text(
                         'Name',
                         style: TextStyle(
@@ -216,44 +178,19 @@ class _ShetechProfileState extends State<ShetechProfile> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'First Name',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[300]!,
                             ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'Last Name',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
-                            ),
+                          labelStyle: TextStyle(
+                            color: Colors.grey[400],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -274,26 +211,19 @@ class _ShetechProfileState extends State<ShetechProfile> {
                           color: Colors.black,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: 'Eliane@Gmail.com',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
+                      TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[300]!,
                             ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ],
+                          labelStyle: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -314,26 +244,19 @@ class _ShetechProfileState extends State<ShetechProfile> {
                           color: Colors.black,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300]!,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: '@ElianeMunezero',
-                                labelStyle: TextStyle(
-                                  color: Colors.grey[400],
-                                ),
-                              ),
+                      TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey[300]!,
                             ),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ],
+                          labelStyle: TextStyle(
+                            color: Colors.grey[400],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -395,15 +318,13 @@ class _ShetechProfileState extends State<ShetechProfile> {
                           .collection('users')
                           .doc(currentUser!.uid)
                           .set(
-                              {
-                            'firstName': _firstNameController.text,
-                            'lastName': _lastNameController.text,
-                            'email': _emailController.text,
-                            'username': _usernameController.text,
-                          },
-                              SetOptions(
-                                  merge:
-                                      true)); // Use merge to update only the fields that have changed
+                        {
+                          'name': _nameController.text,
+                          'email': _emailController.text,
+                          'username': _usernameController.text,
+                        },
+                        SetOptions(merge: true),
+                      );
 
                       // Optionally show a success message or feedback to the user
                       ScaffoldMessenger.of(context).showSnackBar(

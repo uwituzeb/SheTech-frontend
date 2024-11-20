@@ -7,6 +7,7 @@ import 'welcome_screen.dart';
 import 'reset_password.dart';
 import 'create_password.dart';
 import 'instructor/course_list_page.dart';
+import 'courses.dart';
 
 
 void main() {
@@ -26,8 +27,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/splash',
+      initialRoute: '/courses',
       routes: {
+        '/courses': (context) => const CourseListPageScreen(),
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),

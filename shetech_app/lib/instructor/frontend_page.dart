@@ -6,13 +6,18 @@ class FrontEndPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SheTech'),
-        backgroundColor: const Color.fromARGB(255, 157, 78, 221),
-        actions: const [
-          Icon(Icons.person), // Icon representing user
-        ],
-      ),
+        appBar: AppBar(
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: const Color.fromARGB(255, 157, 78, 221),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person,color: Colors.white,),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
+        ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

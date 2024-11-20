@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
 
 class CreatePasswordScreen extends StatefulWidget {
   const CreatePasswordScreen({super.key});
@@ -8,8 +9,70 @@ class CreatePasswordScreen extends StatefulWidget {
 }
 
 class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  String _errorMessage = '';
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  final _authService = AuthService();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handlePasswordReset() async {
+    if (!_formKey.currentState!.validate()) return;
+    
+    if (_passwordController.text != _confirmPasswordController.text) {
+      setState(() {
+        _errorMessage = 'Passwords do not match';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      final String? code = ModalRoute.of(context)?.settings.arguments as String?;
+      if (code == null) {
+        throw 'Invalid password reset code';
+      }
+
+      await _authService.confirmPasswordReset(
+        code: code,
+        newPassword: _passwordController.text,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password successfully reset!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +84,11 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -48,6 +115,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                         _isPasswordVisible = !_isPasswordVisible;
                       });
                     },
+                    controller: _passwordController
                   ),
                   const SizedBox(height: 16),
                   _buildTextField(
@@ -59,10 +127,11 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                         _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
                       });
                     },
+                    controller: _confirmPasswordController,
                   ),
                   const SizedBox(height: 32.0),
                   ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, '/login'),
+                    onPressed: _isLoading ? null : _handlePasswordReset,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepPurple[50],
                       foregroundColor: Theme.of(context).primaryColor,
@@ -72,15 +141,36 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    child: _isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            'Reset Password',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                       ),
-                    ),
-                  ),
+
+                      // Error message
+                      if (_errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  
+                    
+                  
                   const SizedBox(height: 16.0),
+
+                  // Login Button
                   TextButton(
                     onPressed: () => Navigator.pushNamed(context, '/login'),
                     style: TextButton.styleFrom(
@@ -105,16 +195,20 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+    ),
+  );
+}
 
    Widget _buildTextField(
     String hint, {
     bool isPassword = false,
     bool? isPasswordVisible,
     VoidCallback? onVisibilityChanged,
+    TextEditingController? controller,
   }) {
-    return TextField(
+    return TextFormField(
+      controller: controller,
       obscureText: isPassword && !(isPasswordVisible ?? false),
       decoration: InputDecoration(
         hintText: hint,
@@ -135,10 +229,6 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                 onPressed: onVisibilityChanged,
               )
             : null,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
       ),
     );
   }

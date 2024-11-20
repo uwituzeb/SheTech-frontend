@@ -1,38 +1,42 @@
-# SheTech - Flutter Frontend
+# SheTech Flutter Mobile App
 
 ## Overview
 
 SheTech is a mobile application designed to empower women in Rwanda by providing access to tech education, networking opportunities, and a supportive community. 
-This Flutter-based frontend offers a comprehensive learning platform with features tailored to both learners and instructors.
+This Flutter-based app offers a comprehensive learning platform with features tailored to both learners and instructors, powered by Firebase for real-time data synchronization and authentication.
 
 ## Features
 
 ### User Authentication:
 
   - Signup and login securely using email and password or using google authentication
+  - Password reset functionality
 
 ### Homepage
 
   - Overview of the platform with quick access to courses, events, and community updates
+  - Real-time updates using Firebase Firestore
 
 ### Courses
 
   - Browse a list of available courses
   - View detailed information about each course including lessons, resources and instructor information
+  - Course materials stored in Firebase Storage
 
 ### Events Calendar
 
   - View upcoming events, workshops, and networking opportunities
+  - Real-time event updates
 
 ### Profile & Settings
 
   - Update user profile information
-  - Manage account settings, including password and notification preferences
-
+  - 
 ### Instructor Portal
 
   - Create and manage courses
   - Update existing course details, add lessons, and share resources
+  - Real-time course updates using Firebase
 
 ## Getting Started
 
@@ -40,6 +44,8 @@ This Flutter-based frontend offers a comprehensive learning platform with featur
 
 - Flutter SDK (version 3.x or later)
 - Android Studio / Xcode
+- Firebase account
+- `google-services.json` (Android)
 
 ### Installation
 
@@ -52,8 +58,15 @@ cd SheTech-frontend
 cd shetech_app
 
 ```
+2. Set up Firebase
 
-2.  Install dependencies
+- Create new project in firebase console
+- Enable authentication (Email/Password and Google Sign-In)
+- Set up Cloud Firestore
+- Download and add `google-services.json` to `android/app/` 
+
+
+3.  Install dependencies
 
 ```
 
@@ -61,7 +74,7 @@ flutter pub get
 
 ```
 
-3. Run the app
+4. Run the app
 
 ```
 
@@ -79,6 +92,8 @@ flutter run
   |-- learners/            # learners courses page screen
   |-- splash/               # splash screen and welcome page widgets
   |-- settings/               # settings and profile widgets
+  |-- services/            # Firebase services
+      |-- 
   |-- main.dart            # Entry point of the application
   |-- homepage.dart             # homepage widget
 ```
@@ -133,7 +148,7 @@ Contributions are welcome! If you want to contribute, please follow these steps:
 2. Eliane Munezero
 3. Gentille Umutoni
 4. Kangabire Muhoza Merveille
-5. Cynthia Uwase
+5. Mpano Umumararungu Cynthia
 
 
 

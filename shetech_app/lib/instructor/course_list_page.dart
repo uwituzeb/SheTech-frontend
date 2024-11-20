@@ -152,11 +152,7 @@ class _CourseListPageState extends State<CourseListPage> {
                   child: const Text('Add new course'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isEditing = !isEditing; // Toggle editing mode
-                    });
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
@@ -169,12 +165,29 @@ class _CourseListPageState extends State<CourseListPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
         ],
       ),
     );
@@ -188,7 +201,6 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
-  final bool isEditing; // State for managing edit mode
 
   const CourseItem({
     super.key, 
@@ -196,9 +208,10 @@ class CourseItem extends StatelessWidget {
     required this.title,
     required this.instructor,
     required this.students,
-    required this.rating,
-    required this.isEditing,
+    required this.rating, required bool isEditing,
   });
+  
+  get isEditing => null;
 
   @override
   Widget build(BuildContext context) {
@@ -248,6 +261,13 @@ class CourseItem extends StatelessWidget {
                           fontSize: 18, // Increase font size
                         ),
                       ),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18, // Increase font size
+                    ),
+                  ),
                   Text(instructor),
                   const SizedBox(height: 5),
                   Row(

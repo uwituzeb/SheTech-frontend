@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shetech_app/authentication/auth.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,6 +15,8 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   String _errorMessage = '';
+
+  String _selectedRole = 'learner';
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -44,6 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
         name: _nameController.text.trim(),
+        role: _selectedRole,
       );
       
       if (userCredential != null && mounted) {
@@ -143,6 +145,27 @@ class _SignupScreenState extends State<SignupScreen> {
                     });
                   },
                   controller: _confirmPasswordController,
+                ),
+                const SizedBox(height: 16.0),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  value: _selectedRole,
+                  items: [
+                    DropdownMenuItem(value: 'learner', child: Text('Learner', style: TextStyle(color: Theme.of(context).primaryColor))),
+                    DropdownMenuItem(value: 'teacher', child: Text('Instructor', style: TextStyle(color: Theme.of(context).primaryColor))),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedRole = value!;
+                    });
+                  },
                 ),
                 const SizedBox(height: 32.0),
                 ElevatedButton(

@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,9 +21,19 @@ import 'learners/courses_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  if(Firebase.apps.isEmpty){
+    try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    
+  } catch (e) {
+    print("Firebase initialization error: $e");
+  }
+  }
+  
+
 
   final dynamicLinks = FirebaseDynamicLinks.instance;
   final PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
@@ -81,7 +91,7 @@ void handleDynamicLink(Uri deepLink) {
   if (deepLink.path == '/reset-password') {
     final oobCode = deepLink.queryParameters['oobCode'];
     if (oobCode != null) {
-      GlobalKey<NavigatorState>().currentState?.pushNamed(
+      navigatorKey.currentState?.pushNamed(
         '/create-password',
         arguments: oobCode,
       );

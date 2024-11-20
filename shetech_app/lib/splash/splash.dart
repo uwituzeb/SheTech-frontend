@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'welcome_screen.dart';
 
+<<<<<<< HEAD:shetech_app/lib/splash.dart
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,10 +21,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
+=======
+>>>>>>> origin/main:shetech_app/lib/splash/splash.dart
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 

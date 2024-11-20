@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shetech_app/authentication/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -7,7 +8,73 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  String _errorMessage = '';
+
+  final _authService = AuthService();
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      await _authService.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      if (userCredential != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
@@ -18,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
+            child: Form(
+              key: _formKey,
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -36,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 32),
-                _buildTextField('Enter Your Email'),
+                _buildTextField('Enter Your Email', controller: _emailController),
                 const SizedBox(height: 16),
                 _buildTextField(
                   'Enter Password',
@@ -47,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _isPasswordVisible = !_isPasswordVisible;
                     });
                   },
+                  controller: _passwordController,
                 ),
                 const SizedBox(height: 8.0),
                 GestureDetector(
@@ -61,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 32.0),
                 ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/instructor/course-list'),
+                  onPressed: _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple[50],
                     foregroundColor: Theme.of(context).primaryColor,
@@ -83,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 16.0,
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _handleGoogleSignIn,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.grey[300],
@@ -133,7 +203,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                if (_errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
               ],
+            ),
             ),
           ),
         ),
@@ -146,8 +229,10 @@ class _LoginScreenState extends State<LoginScreen> {
     bool isPassword = false,
     bool? isPasswordVisible,
     VoidCallback? onVisibilityChanged,
+    TextEditingController? controller,
   }) {
-    return TextField(
+    return TextFormField(
+      controller: controller,
       obscureText: isPassword && !(isPasswordVisible ?? false),
       decoration: InputDecoration(
         hintText: hint,

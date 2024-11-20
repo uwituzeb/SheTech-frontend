@@ -10,10 +10,7 @@ class CalendarPageScreen extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPageScreen> {
-<<<<<<< HEAD
   int _selectedIndex = 2; // For bottom nav, assuming calendar is index 2
-=======
->>>>>>> origin/main
   late final ValueNotifier<List<Event>> _selectedEvents;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -199,8 +196,4 @@ class Event {
 
   Event(this.title);
 }
-<<<<<<< HEAD
-=======
- 
->>>>>>> origin/main
  

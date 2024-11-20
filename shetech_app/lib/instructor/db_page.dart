@@ -6,6 +6,7 @@ class DbPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
         appBar: AppBar(
           title: const Text('SheTech', style: TextStyle(color: Colors.white)),
           backgroundColor: const Color.fromARGB(255, 157, 78, 221),
@@ -18,6 +19,21 @@ class DbPage extends StatelessWidget {
             ),
           ],
         ),
+=======
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('SheTech'),
+        backgroundColor: const Color.fromARGB(255, 157, 78, 221),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
+      ),
+>>>>>>> origin/main
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

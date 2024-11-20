@@ -5,19 +5,55 @@ import 'ml_page.dart';
 import 'html_page.dart';
 import 'popups.dart';
 
-class CourseListPage extends StatelessWidget {
+
+
+class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
+  @override
+  State<CourseListPage> createState() => _CourseListPageState();
+}
+
+class _CourseListPageState extends State<CourseListPage> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
+    switch (index) {
+      case 0: // Home
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1: // Calendar
+        Navigator.pushReplacementNamed(context, '/courses');
+        break;
+      case 2: // Setting
+        Navigator.pushReplacementNamed(context, '/calendar');
+        break;
+      case 3: // Profile
+        Navigator.pushReplacementNamed(context, '/settings');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromARGB(255, 157, 78, 221),
-        actions: const [
-          Icon(Icons.person), // User profile icon
-        ],
-      ),
+          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+          ],
+        ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -128,7 +164,7 @@ class CourseListPage extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    foregroundColor: const Color.fromARGB(255, 157, 78, 221),
+                    foregroundColor: Theme.of(context).primaryColor,
                     side: const BorderSide(
                       color: Color.fromARGB(255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
@@ -139,7 +175,7 @@ class CourseListPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 157, 78, 221),
+                    backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
                   ),
                   child: const Text('Manage courses'),
@@ -149,9 +185,38 @@ class CourseListPage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
+        unselectedItemColor: Colors.white,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'courses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_sharp),
+            label: 'calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'settings',
+          ),
+        ],
+      ),
     );
   }
 }
+
+
+  
 
 // Widget to represent each course item
 class CourseItem extends StatelessWidget {

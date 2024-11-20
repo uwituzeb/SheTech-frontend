@@ -104,7 +104,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('SheTech', style: TextStyle(color: Colors.white)),
         backgroundColor: Theme.of(context).primaryColor,
@@ -375,7 +374,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
@@ -425,7 +423,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
                       color: Colors.white,
-                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -435,7 +432,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
         backgroundColor: Theme.of(context).primaryColor,
         selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
         unselectedItemColor: Colors.white,

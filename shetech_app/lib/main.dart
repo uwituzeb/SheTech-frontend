@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:shetech_app/firebase_options.dart';
 import 'splash/splash.dart';
 import 'authentication/signup_screen.dart';
 import 'authentication/login_screen.dart';
@@ -26,7 +26,8 @@ void main() async {
   );
 
   final dynamicLinks = FirebaseDynamicLinks.instance;
-  final PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
+  final PendingDynamicLinkData? initialLink =
+      await dynamicLinks.getInitialLink();
   if (initialLink != null) {
     handleDynamicLink(initialLink.link);
   }
@@ -82,9 +83,9 @@ void handleDynamicLink(Uri deepLink) {
     final oobCode = deepLink.queryParameters['oobCode'];
     if (oobCode != null) {
       GlobalKey<NavigatorState>().currentState?.pushNamed(
-        '/create-password',
-        arguments: oobCode,
-      );
+            '/create-password',
+            arguments: oobCode,
+          );
     }
   }
 }

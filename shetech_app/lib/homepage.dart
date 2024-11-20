@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  
   @override
   // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
@@ -47,20 +46,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-          backgroundColor: Theme.of(context).primaryColor,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
+        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
+      ),
       body: _pages[_selectedIndex],
 
-      // Bottom Navigation Bar 
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         selectedItemColor: const Color.fromARGB(255, 46, 45, 45),
@@ -135,9 +134,11 @@ class DashboardScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/book-event');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple, // Set button background color to purple
+                      backgroundColor: Colors
+                          .purple, // Set button background color to purple
                     ),
-                    child: const Text('Learn More', style: TextStyle(color: Colors.white)),
+                    child: const Text('Learn More',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),

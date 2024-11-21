@@ -53,19 +53,16 @@ class _ShetechProfileState extends State<ShetechProfile> {
     String nameInput = _nameController.text;
     List<String> nameParts = nameInput.split(' ');
 
-    // Check if the input is empty or contains only whitespace
     if (nameParts.isEmpty || nameInput.trim().isEmpty) {
       _usernameController.text = '';
       return;
     }
 
-    // Generate the username
     String username = '@' + nameParts.join('').toLowerCase();
     _usernameController.text = username;
 
-    // Move the cursor to the end of the text
-    _usernameController.selection =
-        TextSelection.fromPosition(TextPosition(offset: username.length));
+    // Notify the framework to rebuild UI
+    setState(() {});
   }
 
   Future<void> fetchUserData() async {
@@ -80,7 +77,8 @@ class _ShetechProfileState extends State<ShetechProfile> {
             userData = userDoc.data();
             _nameController.text = userData?['name'] ?? '';
             _emailController.text = userData?['email'] ?? '';
-            _usernameController.text = userData?['username'] ?? '';
+            _usernameController.text = '@' +
+                (userData?['name'] ?? '').replaceAll(' ', '').toLowerCase();
           });
         } else {
           print('User  document not found');

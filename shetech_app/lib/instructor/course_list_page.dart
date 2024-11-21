@@ -27,10 +27,10 @@ class _CourseListPageState extends State<CourseListPage> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/courses');
+        Navigator.pushReplacementNamed(context, '/instructor/courses');
         break;
       case 2: // Setting
         Navigator.pushReplacementNamed(context, '/calendar');
@@ -99,27 +99,45 @@ class _CourseListPageState extends State<CourseListPage> {
                   return ListView.builder(
                     itemCount: courses.length,
                     itemBuilder: (context, index) {
-                      final course = courses[index].data() as Map<String, dynamic>;
+                      final course =
+                          courses[index].data() as Map<String, dynamic>;
 
                       return GestureDetector(
                         onTap: () {
                           // Navigate to the specific course page based on course title
                           if (course['title'] == 'Introduction to HTML') {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const HtmlPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HtmlPage()));
                           } else if (course['title'] == 'Machine Learning') {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MlPage()));
-                          } else if (course['title'] == 'Front-end Development') {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const FrontEndPage()));
-                          } else if (course['title'] == 'Database Normalization') {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DbPage()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MlPage()));
+                          } else if (course['title'] ==
+                              'Front-end Development') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FrontEndPage()));
+                          } else if (course['title'] ==
+                              'Database Normalization') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DbPage()));
                           }
                         },
                         child: CourseItem(
                           imageUrl: course['image_url'] ?? 'images/default.jpg',
                           title: course['Title'] ?? 'Untitled Course',
-                          instructor: course['Instructor'] ?? 'Unknown Instructor',
-                          students: '${course['Students Enrolled'] ?? 0} students',
-                          rating: (course['Rating'] ?? 0.0).toDouble(),
+                          instructor:
+                              course['Instructor'] ?? 'Unknown Instructor',
+                          students:
+                              '${course['Students Enrolled'] ?? 0} students',
+                          rating: (course['Rating'] ?? 0.0),
                           isEditing: isEditing,
                         ),
                       );
@@ -138,14 +156,16 @@ class _CourseListPageState extends State<CourseListPage> {
                     // Show first popup when "Add new course" is pressed
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => const AddCoursePopup1(),
+                      builder: (BuildContext context) =>
+                          const AddCoursePopup1(),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     foregroundColor: Theme.of(context).primaryColor,
                     side: const BorderSide(
-                      color: Color.fromARGB(255, 157, 78, 221), // Purple border color
+                      color: Color.fromARGB(
+                          255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
                     ),
                   ),
@@ -201,17 +221,20 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
+  final bool isEditing;
 
   const CourseItem({
-    super.key, 
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.instructor,
     required this.students,
-    required this.rating, required bool isEditing,
+    required this.rating,
+    required this.isEditing,
+
   });
   
-  get isEditing => null;
+  // get isEditing => null;
 
   @override
   Widget build(BuildContext context) {
@@ -243,31 +266,24 @@ class CourseItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  isEditing 
-                    ? TextField(
-                        decoration: InputDecoration(
-                          hintText: title,
-                          contentPadding: const EdgeInsets.all(8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: const BorderSide(color: Colors.purple),
+                  isEditing
+                      ? TextField(
+                          decoration: InputDecoration(
+                            hintText: title,
+                            contentPadding: const EdgeInsets.all(8.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: const BorderSide(color: Colors.purple),
+                            ),
+                          ),
+                        )
+                      : Text(
+                          title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
-                      )
-                    : Text(
-                        title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18, // Increase font size
-                        ),
-                      ),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18, // Increase font size
-                    ),
-                  ),
                   Text(instructor),
                   const SizedBox(height: 5),
                   Row(

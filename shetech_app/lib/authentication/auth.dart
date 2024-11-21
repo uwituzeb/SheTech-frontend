@@ -43,8 +43,8 @@ class AuthService {
       await _saveUserRole(
         userCredential.user?.uid, 
         role, 
-        userCredential.user?.displayName, 
-        userCredential.user?.email
+        name, 
+        email,
       );
 
       await userCredential.user?.updateDisplayName(name);

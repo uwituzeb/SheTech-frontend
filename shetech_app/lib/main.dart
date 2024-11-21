@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,20 +21,14 @@ import 'learners/courses_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print("Existing Firebase Apps: ${Firebase.apps}");
 
   if (Firebase.apps.isEmpty) {
     try {
-      print("Before initialization - Firebase apps: ${Firebase.apps}");
-
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-
-      print("After initialization - Firebase apps: ${Firebase.apps}");
     } catch (e) {
       print("Firebase initialization error: $e");
-      print("Error details: ${e.runtimeType}");
     }
   }
 

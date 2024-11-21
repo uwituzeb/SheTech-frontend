@@ -33,7 +33,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 
     if (!_formKey.currentState!.validate()) {
       return;
-    };
+    }
 
     setState(() {
       _isLoading = true;

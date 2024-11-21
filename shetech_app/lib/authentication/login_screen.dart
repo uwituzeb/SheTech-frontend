@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'auth.dart';
 
@@ -30,13 +31,24 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      await _authService.signInWithEmailAndPassword(
+      final userCredential = await _authService.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
 
+      final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential?.user?.uid)
+        .get();
+
+      final userRole = userDoc.data()?['role'];
+
       if (mounted) {
+        if (userRole == 'teacher') {
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
+      } else {
         Navigator.pushReplacementNamed(context, '/home');
+      }
       }
     } catch (e) {
       setState(() {

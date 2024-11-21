@@ -14,6 +14,7 @@ import 'authentication/create_password.dart';
 import 'homepage.dart';
 import 'events/eventpage.dart';
 import 'instructor/course_list_page.dart';
+import 'instructor/landing_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
 import 'events/calendar.dart';
@@ -78,10 +79,11 @@ class MyApp extends StatelessWidget {
         '/create-password': (context) => const CreatePasswordScreen(),
         '/book-event': (context) => const BookingScreen(),
         '/instructor/courses': (context) => const CourseListPage(),
+        '/instructor/landing_page': (context) => const InstructorHomeScreen(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
         '/calendar': (context) => const CalendarPageScreen(),
-        '/courses': (context) => const CourseListPageScreen()
+        '/courses': (context) => const CourseListPageScreen(),
       },
     );
   }

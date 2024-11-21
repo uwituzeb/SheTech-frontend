@@ -45,24 +45,51 @@ class _ShetechProfileState extends State<ShetechProfile> {
   void initState() {
     super.initState();
     fetchUserData();
+
+    _nameController.addListener(_updateUsername);
+  }
+
+  void _updateUsername() {
+    String nameInput = _nameController.text;
+    List<String> nameParts = nameInput.split(' ');
+
+    // Check if the input is empty or contains only whitespace
+    if (nameParts.isEmpty || nameInput.trim().isEmpty) {
+      _usernameController.text = '';
+      return;
+    }
+
+    // Generate the username
+    String username = '@' + nameParts.join('').toLowerCase();
+    _usernameController.text = username;
+
+    // Move the cursor to the end of the text
+    _usernameController.selection =
+        TextSelection.fromPosition(TextPosition(offset: username.length));
   }
 
   Future<void> fetchUserData() async {
-    currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      DocumentSnapshot<Map<String, dynamic>> userDoc =
-          await _firestore.collection('users').doc(currentUser!.uid).get();
+    try {
+      currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> userDoc =
+            await _firestore.collection('users').doc(currentUser!.uid).get();
 
-      if (userDoc.exists) {
-        setState(() {
-          userData = userDoc.data();
-          _nameController.text = userData?['name'] ?? '';
-          _emailController.text = userData?['email'] ?? '';
-          _usernameController.text = userData?['username'] ?? '';
-        });
+        if (userDoc.exists) {
+          setState(() {
+            userData = userDoc.data();
+            _nameController.text = userData?['name'] ?? '';
+            _emailController.text = userData?['email'] ?? '';
+            _usernameController.text = userData?['username'] ?? '';
+          });
+        } else {
+          print('User  document not found');
+        }
       } else {
-        print('User  document not found');
+        print('User  is not logged in');
       }
+    } catch (e) {
+      print('Error fetching user data: $e');
     }
   }
 
@@ -151,7 +178,7 @@ class _ShetechProfileState extends State<ShetechProfile> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              userData?['role'] ?? 'Student',
+                              userData?['role'] ?? 'Learner',
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
@@ -262,36 +289,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                width: 250,
-                height: 60,
-                child: TextButton(
-                  onPressed: () {
-                    // Handle change password logic
-                  },
-                  child: const Text(
-                    'Change Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(10.0),
@@ -363,10 +360,6 @@ class _ShetechProfileState extends State<ShetechProfile> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'courses',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shetech_app/authentication/auth.dart';
+import 'auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -100,135 +100,136 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Welcome Back',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Log In to continue learning',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 32),
-                _buildTextField('Enter Your Email', controller: _emailController),
-                const SizedBox(height: 16),
-                _buildTextField(
-                  'Enter Password',
-                  isPassword: true,
-                  isPasswordVisible: _isPasswordVisible,
-                  onVisibilityChanged: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                  controller: _passwordController,
-                ),
-                const SizedBox(height: 8.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/forgot-password');
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: primaryColor),
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-                const SizedBox(height: 32.0),
-                ElevatedButton(
-                  onPressed: _handleLogin,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple[50],
-                    foregroundColor: Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Log In',
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Welcome Back',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 24.0,
                       fontWeight: FontWeight.bold,
+                      color: primaryColor,
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                ElevatedButton(
-                    onPressed: _handleGoogleSignIn,
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Log In to continue learning',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 32),
+                  _buildTextField('Enter Your Email',
+                      controller: _emailController),
+                  const SizedBox(height: 16),
+                  _buildTextField(
+                    'Enter Password',
+                    isPassword: true,
+                    isPasswordVisible: _isPasswordVisible,
+                    onVisibilityChanged: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    controller: _passwordController,
+                  ),
+                  const SizedBox(height: 8.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/forgot-password');
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: primaryColor),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  const SizedBox(height: 32.0),
+                  ElevatedButton(
+                    onPressed: _handleLogin,
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple[50],
+                      foregroundColor: Theme.of(context).primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.grey[300],
-                      foregroundColor: Colors.black87,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'images/google.png',
-                          height: 24,
-                          width: 24,
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        const Text(
-                          'Sign In With Google',
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    )),
-                const SizedBox(height: 24.0),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, '/signup'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    elevation: 0,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    child: const Text(
+                      'Log In',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const SizedBox(
+                    height: 16.0,
                   ),
-                ),
-                if (_errorMessage.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text(
-                          _errorMessage,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
+                  ElevatedButton(
+                      onPressed: _handleGoogleSignIn,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Colors.grey[300],
+                        foregroundColor: Colors.black87,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-              ],
-            ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/google.png',
+                            height: 24,
+                            width: 24,
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          const Text(
+                            'Sign In With Google',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  const SizedBox(height: 24.0),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/signup'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      elevation: 0,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  if (_errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Text(
+                        _errorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),

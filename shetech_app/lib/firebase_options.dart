@@ -26,14 +26,14 @@ class DefaultFirebaseOptions {
         return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
+          'DefaultFirebaseOptions have not been configured for macOS - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
+          'DefaultFirebaseOptions have not been configured for Linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
@@ -66,6 +66,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '71036710855',
     projectId: 'shetech-d61dd',
     storageBucket: 'shetech-d61dd.appspot.com',
+    androidClientId:
+        '71036710855-t0v0tpt0mpl782mv3eit5bgjfguegh1a.apps.googleusercontent.com',
+    iosClientId:
+        '71036710855-dvtesc5n8mdlu8o4m18nvp3o5vnt7if6.apps.googleusercontent.com',
     iosBundleId: 'com.example.shetechApp',
   );
 
@@ -74,7 +78,6 @@ class DefaultFirebaseOptions {
     appId: '1:71036710855:web:996ba5d82375c6278133e2',
     messagingSenderId: '71036710855',
     projectId: 'shetech-d61dd',
-    authDomain: 'shetech-d61dd.firebaseapp.com',
     storageBucket: 'shetech-d61dd.appspot.com',
   );
 }

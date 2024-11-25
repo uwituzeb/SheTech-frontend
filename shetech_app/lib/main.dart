@@ -23,21 +23,19 @@ import 'learners/courses_list.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(Firebase.apps.isEmpty){
+  if (Firebase.apps.isEmpty) {
     try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    
-  } catch (e) {
-    print("Firebase initialization error: $e");
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } catch (e) {
+      print("Firebase initialization error: $e");
+    }
   }
-  }
-  
-
 
   final dynamicLinks = FirebaseDynamicLinks.instance;
-  final PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
+  final PendingDynamicLinkData? initialLink =
+      await dynamicLinks.getInitialLink();
   if (initialLink != null) {
     handleDynamicLink(initialLink.link);
   }

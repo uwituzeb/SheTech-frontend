@@ -230,11 +230,9 @@ class CourseItem extends StatelessWidget {
     required this.instructor,
     required this.students,
     required this.rating,
+    // required bool isEditing,
     required this.isEditing,
-
   });
-  
-  // get isEditing => null;
 
   @override
   Widget build(BuildContext context) {

@@ -27,6 +27,7 @@ import 'authentication/create_password.dart';
 import 'homepage.dart';
 import 'events/eventpage.dart';
 import 'instructor/course_list_page.dart';
+import 'instructor/landing_page.dart';
 import 'settings/profile.dart';
 import 'settings/settings.dart';
 import 'events/calendar.dart';
@@ -35,21 +36,19 @@ import 'learners/courses_list.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(Firebase.apps.isEmpty){
+  if (Firebase.apps.isEmpty) {
     try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    
-  } catch (e) {
-    print("Firebase initialization error: $e");
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } catch (e) {
+      print("Firebase initialization error: $e");
+    }
   }
-  }
-  
-
 
   final dynamicLinks = FirebaseDynamicLinks.instance;
-  final PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
+  final PendingDynamicLinkData? initialLink =
+      await dynamicLinks.getInitialLink();
   if (initialLink != null) {
     handleDynamicLink(initialLink.link);
   }
@@ -96,10 +95,11 @@ class MyApp extends StatelessWidget {
         '/create-password': (context) => const CreatePasswordScreen(),
         '/book-event': (context) => const BookingScreen(),
         '/instructor/courses': (context) => const CourseListPage(),
+        '/instructor/landing_page': (context) => const InstructorHomeScreen(),
         '/profile': (context) => const ShetechProfile(),
         '/settings': (context) => const SettingScreen(),
         '/calendar': (context) => const CalendarPageScreen(),
-        '/courses': (context) => const CourseListPageScreen()
+        '/courses': (context) => const CourseListPageScreen(),
       },
     );
   }

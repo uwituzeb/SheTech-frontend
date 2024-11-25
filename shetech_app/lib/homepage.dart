@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -90,138 +91,77 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Welcome, Eliane!',
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16.0),
-          // Get Involved Card
-          Card(
-            color: Colors.purple.shade100,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Get Involved - Join a Club!',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  const Text(
-                    'Our next event, happening at African Leadership University this Saturday, will open to countless learning opportunities.',
-                    style: TextStyle(fontSize: 14.0),
-                  ),
-                  const SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/book-event');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors
-                          .purple, // Set button background color to purple
-                    ),
-                    child: const Text('Learn More',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('SheTech Dashboard', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Welcome, Eliane!',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          const SizedBox(height: 16.0),
-          // Enrolled Courses
-          const Text(
-            'Enrolled Courses',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 16.0),
+            const Text(
+              'Enrolled Courses',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 8.0),
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.blue.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.green.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.blueGrey.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          // ignore: prefer_const_constructors
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: const Color.fromARGB(255, 114, 169, 179),
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0),
-          // Assignments
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Assignments',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('View All'),
-              ),
-            ],
-          ),
-          const AssignmentCard(
-            assignmentName: 'Graphic Fundamentals',
-            dueDate: 'Due: Oct 21, 2023',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
-          const AssignmentCard(
-            assignmentName: 'User Experience Research',
-            dueDate: 'Due: Nov 1, 2024',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
-          const AssignmentCard(
-            assignmentName: 'Advanced Web Design',
-            dueDate: 'Due: Nov 1, 2024',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
-        ],
+            const SizedBox(height: 8.0),
+
+            // Fetch courses dynamically from Firebase Firestore
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('courses').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Text('No courses available.');
+                }
+                final courses = snapshot.data!.docs;
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: courses.length,
+                  itemBuilder: (context, index) {
+                    final course = courses[index];
+                    return CourseCard(
+                      courseName: course['courseName'],
+                      courseColor: _hexToColor(course['courseColor']),
+                      instructor: course['instructor'],
+                      schedule: course['schedule'],
+                      location: course['location'],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  // Convert HEX color (stored in Firestore) to Flutter Color
+  Color _hexToColor(String hex) {
+    return Color(int.parse(hex.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
 
@@ -269,20 +209,8 @@ class CourseCard extends StatelessWidget {
   }
 }
 
-class AssignmentCard extends StatelessWidget {
-  final String assignmentName;
-  final String dueDate;
-  final Color assignmentColor;
-
-  const AssignmentCard({
-    super.key,
-    required this.assignmentName,
-    required this.dueDate,
-    required this.assignmentColor,
-  });
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, String dueDate, dynamic assignmentColor, String assignmentName) {
     return Card(
       color: assignmentColor,
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -305,4 +233,4 @@ class AssignmentCard extends StatelessWidget {
       ),
     );
   }
-}
+

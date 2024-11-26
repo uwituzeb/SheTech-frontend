@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/courses',
+      initialRoute: '/splash',
       routes: {
         '/home': (context) => const HomeScreen(),
         '/splash': (context) => const SplashScreen(),

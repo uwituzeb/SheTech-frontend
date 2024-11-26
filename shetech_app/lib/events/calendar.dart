@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class Event {
+  final String title;
+  final DateTime date;
+
+  Event({required this.title, required this.date});
+
+  // Factory constructor to create Event from Firestore document
+  factory Event.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Event(
+      title: data['EventName'] ?? 'Unnamed Event',
+      date: (data['date'] as Timestamp).toDate(),
+    );
+  }
+}
 
 class CalendarPageScreen extends StatefulWidget {
   const CalendarPageScreen({super.key});
@@ -18,44 +33,64 @@ class _CalendarPageState extends State<CalendarPageScreen> {
 
   // Map to store events
   final Map<DateTime, List<Event>> _events = {};
+  bool _isLoading = true; // Track loading state
 
-@override
-void initState() {
+  @override
+  void initState() {
     super.initState();
     _fetchEvents();  // Fetch events from Firestore
-    _selectedEvents = ValueNotifier(_getEventsForDay(_focusedDay)); // Initialize selected events
-}
+    _selectedEvents = ValueNotifier(_getEventsForDay(_focusedDay)); 
+  }
 
- Future<void> _fetchEvents() async {
-    // Fetch documents from the Firestore 'events' collection
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
+  Future<void> _fetchEvents() async {
+    try {
+      // Fetch documents from the Firestore 'events' collection
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
 
-    // Iterate through each document in the snapshot
-    for (var doc in snapshot.docs) {
-      String eventName = doc['EventName'];
-      Timestamp timestamp = doc['date'];
-      DateTime eventDate = timestamp.toDate();
+      // Clear existing events
+      _events.clear();
 
-      // Normalize date to just year, month, day
-      DateTime normalizedDate = DateTime(eventDate.year, eventDate.month, eventDate.day);
+      // Iterate through each document in the snapshot
+      for (var doc in snapshot.docs) {
+        Event event = Event.fromFirestore(doc);
 
-      // Log fetched events for debugging
-      print('Fetched event: $eventName on $normalizedDate');
+        // Normalize date to just year, month, day
+        DateTime normalizedDate = DateTime(event.date.year, event.date.month, event.date.day);
 
-      // Add the event to the map
-      if (_events[normalizedDate] == null) {
-        _events[normalizedDate] = [Event(eventName)];
-      } else {
-        _events[normalizedDate]!.add(Event(eventName));
+        // Add the event to the map
+        if (_events[normalizedDate] == null) {
+          _events[normalizedDate] = [event];
+        } else {
+          _events[normalizedDate]!.add(event);
+        }
       }
-    }
 
-    // Update the selected events after fetching
-    _selectedEvents.value = _getEventsForDay(_focusedDay);
-    setState(() {}); // Refresh the UI
-}
+      // Update the selected events after fetching
+      _selectedEvents.value = _getEventsForDay(_focusedDay);
+      
+      // Update loading state
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching events: $e');
+      
+      // Update loading state and show error
+      setState(() {
+        _isLoading = false;
+      });
+      
+      // Optional: Show error to user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load events: $e')),
+      );
+    }
+  }
+
   List<Event> _getEventsForDay(DateTime day) {
-    return _events[day] ?? []; // return events for the specific day or empty list
+    // Normalize the day to remove time components
+    DateTime normalizedDay = DateTime(day.year, day.month, day.day);
+    return _events[normalizedDay] ?? []; 
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -67,8 +102,6 @@ void initState() {
       });
     }
   }
-
-
 
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
@@ -93,7 +126,6 @@ void initState() {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,14 +135,20 @@ void initState() {
         actions: [
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
-            tooltip: 'Profile', // Added for accessibility
+            tooltip: 'Profile',
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
           ),
         ],
       ),
-      body: Column(
+      body: _isLoading 
+        ? Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          )
+        : Column(
         children: [
           Container(
             margin: const EdgeInsets.only(
@@ -126,12 +164,7 @@ void initState() {
               focusedDay: _focusedDay,
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
               onDaySelected: _onDaySelected,
-              eventLoader: (day) {
-                // ignore: avoid_print
-                print('Loading events for day: $day'); // Debugging line
-                  return _events[day] ?? [];
-
-              },
+              eventLoader: _getEventsForDay,
               calendarStyle: CalendarStyle(
                 outsideDaysVisible: false,
                 selectedDecoration: const BoxDecoration(
@@ -140,6 +173,11 @@ void initState() {
                 ),
                 todayDecoration: BoxDecoration(
                   color: Theme.of(context).primaryColor.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                // Add marker style for events
+                markerDecoration: BoxDecoration(
+                  color: Colors.purple.shade200,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -177,11 +215,19 @@ void initState() {
                           vertical: 4,
                         ),
                         child: ListTile(
+                          leading: Icon(
+                            Icons.event, 
+                            color: Theme.of(context).primaryColor
+                          ),
                           title: Text(
                             value[index].title,
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
+                          ),
+                          subtitle: Text(
+                            'Date: ${value[index].date.toLocal()}',
+                            style: TextStyle(color: Colors.grey),
                           ),
                         ),
                       );
@@ -222,10 +268,3 @@ void initState() {
     );
   }
 }
-
-class Event {
-  final String title;
-
-  Event(this.title);
-}
- 

@@ -1,30 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CalendarPageScreen extends StatefulWidget {
   const CalendarPageScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _CalendarPageState createState() => _CalendarPageState();
 }
 
 class _CalendarPageState extends State<CalendarPageScreen> {
-  int _selectedIndex = 2; // For bottom nav, assuming calendar is index 2
+  int _selectedIndex = 2; // For bottom nav
   late final ValueNotifier<List<Event>> _selectedEvents;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  
-  // Map to store events for different days
+
+  // Map to store events
   final Map<DateTime, List<Event>> _events = {};
 
   @override
   void initState() {
     super.initState();
-    // Populate the map with some sample events
-    _events[DateTime.now()] = [Event("Today's Event")];
-    _events[DateTime.now().add(const Duration(days: 1))] = [Event("Tomorrow's Event")];
+    _fetchEvents();  // Fetch events from Firestore
     _selectedEvents = ValueNotifier(_getEventsForDay(_focusedDay));
+  }
+
+  Future<void> _fetchEvents() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
+
+    for (var doc in snapshot.docs) {
+      String eventName = doc['EventName'];
+      Timestamp timestamp = doc['date'];
+      DateTime eventDate = timestamp.toDate();
+      
+      // Normalize the event date
+      DateTime normalizedDate = DateTime(eventDate.year, eventDate.month, eventDate.day);
+
+      if (_events[normalizedDate] == null) {
+        _events[normalizedDate] = [Event(eventName)];
+      } else {
+        _events[normalizedDate]!.add(Event(eventName));
+      }
+    }
+
+    // Update selected events
+    _selectedEvents.value = _getEventsForDay(_focusedDay);
+    setState(() {}); // Refresh the UI
   }
 
   List<Event> _getEventsForDay(DateTime day) {
@@ -115,7 +136,7 @@ class _CalendarPageState extends State<CalendarPageScreen> {
                 titleTextStyle: TextStyle(
                   color: Color.fromARGB(255, 139, 69, 205),
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
               ),
             ),

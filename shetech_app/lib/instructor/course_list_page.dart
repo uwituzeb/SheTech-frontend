@@ -52,7 +52,7 @@ class _CourseListPageState extends State<CourseListPage> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person),color: Colors.white,
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },

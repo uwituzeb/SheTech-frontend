@@ -209,9 +209,12 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
               icon: Icon(Icons.menu_book),
               label: 'courses',
             ),
+
+            
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_sharp),
               label: 'calendar',
+              
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

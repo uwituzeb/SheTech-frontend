@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person),color: Colors.white,
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },

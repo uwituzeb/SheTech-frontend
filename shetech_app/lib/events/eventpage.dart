@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'payment_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -47,7 +47,26 @@ class _BookingScreenState extends State<BookingScreen> {
         ),
       ),
       onPressed: () {
-        // Handle continue action here
+        // Navigate to PaymentScreen and wait for the result
+  Navigator.push(
+    context, 
+    MaterialPageRoute(
+      builder: (context) => const PaymentScreen(),
+    ),
+  ).then((selectedPaymentMethod) {
+    // Handle the selected payment method here
+    if (selectedPaymentMethod != null) {
+      // Do something with the selected payment method
+      print('Selected Payment Method: $selectedPaymentMethod');
+      
+      // Optional: You might want to show a confirmation or proceed with booking
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Payment method selected: $selectedPaymentMethod'),
+        ),
+      );
+    }
+  });
       },
       child: const Text('Continue', style: TextStyle(color: Colors.white)),
     );

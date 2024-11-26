@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class CalendarPageScreen extends StatefulWidget {
   const CalendarPageScreen({super.key});
 
@@ -18,24 +19,30 @@ class _CalendarPageState extends State<CalendarPageScreen> {
   // Map to store events
   final Map<DateTime, List<Event>> _events = {};
 
-  @override
-  void initState() {
+@override
+void initState() {
     super.initState();
     _fetchEvents();  // Fetch events from Firestore
-    _selectedEvents = ValueNotifier(_getEventsForDay(_focusedDay));
-  }
+    _selectedEvents = ValueNotifier(_getEventsForDay(_focusedDay)); // Initialize selected events
+}
 
-  Future<void> _fetchEvents() async {
+ Future<void> _fetchEvents() async {
+    // Fetch documents from the Firestore 'events' collection
     QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
 
+    // Iterate through each document in the snapshot
     for (var doc in snapshot.docs) {
       String eventName = doc['EventName'];
       Timestamp timestamp = doc['date'];
       DateTime eventDate = timestamp.toDate();
-      
-      // Normalize the event date
+
+      // Normalize date to just year, month, day
       DateTime normalizedDate = DateTime(eventDate.year, eventDate.month, eventDate.day);
 
+      // Log fetched events for debugging
+      print('Fetched event: $eventName on $normalizedDate');
+
+      // Add the event to the map
       if (_events[normalizedDate] == null) {
         _events[normalizedDate] = [Event(eventName)];
       } else {
@@ -43,11 +50,10 @@ class _CalendarPageState extends State<CalendarPageScreen> {
       }
     }
 
-    // Update selected events
+    // Update the selected events after fetching
     _selectedEvents.value = _getEventsForDay(_focusedDay);
     setState(() {}); // Refresh the UI
-  }
-
+}
   List<Event> _getEventsForDay(DateTime day) {
     return _events[day] ?? []; // return events for the specific day or empty list
   }
@@ -61,6 +67,8 @@ class _CalendarPageState extends State<CalendarPageScreen> {
       });
     }
   }
+
+
 
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
@@ -119,7 +127,10 @@ class _CalendarPageState extends State<CalendarPageScreen> {
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
               onDaySelected: _onDaySelected,
               eventLoader: (day) {
-                return _events[day] ?? [];
+                // ignore: avoid_print
+                print('Loading events for day: $day'); // Debugging line
+                  return _events[day] ?? [];
+
               },
               calendarStyle: CalendarStyle(
                 outsideDaysVisible: false,

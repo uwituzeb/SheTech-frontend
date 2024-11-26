@@ -21,10 +21,10 @@ class _InstructorHomeScreenState extends State<InstructorHomeScreen> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/courses');
+        Navigator.pushReplacementNamed(context, '/instructor/courses');
         break;
       case 2: // Setting
         Navigator.pushReplacementNamed(context, '/calendar');

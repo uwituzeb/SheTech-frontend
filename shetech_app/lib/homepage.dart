@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -101,7 +102,7 @@ class DashboardScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Welcome !',
+            '👋 Welcome, Learner!',
             style: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
@@ -146,12 +147,29 @@ class DashboardScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16.0),
           // Enrolled Courses
-          const Text(
-            'Enrolled Courses',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                '📘 Enrolled courses',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/courses');
+                },
+                child: const Text(
+                  'View all >',
+                  style: TextStyle(
+                    color: Color(0xFF9D4EDD),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8.0),
           CourseCard(
@@ -187,38 +205,6 @@ class DashboardScreen extends StatelessWidget {
             location: 'Design Studio A',
           ),
           const SizedBox(height: 16.0),
-          // Assignments
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Assignments',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('View All'),
-              ),
-            ],
-          ),
-          const AssignmentCard(
-            assignmentName: 'Graphic Fundamentals',
-            dueDate: 'Due: Oct 21, 2023',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
-          const AssignmentCard(
-            assignmentName: 'User Experience Research',
-            dueDate: 'Due: Nov 1, 2024',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
-          const AssignmentCard(
-            assignmentName: 'Advanced Web Design',
-            dueDate: 'Due: Nov 1, 2024',
-            assignmentColor: Color.fromARGB(255, 253, 247, 248),
-          ),
         ],
       ),
     );

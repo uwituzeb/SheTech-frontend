@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shetech_app/instructor/db_page.dart';
-import 'package:shetech_app/instructor/frontend_page.dart';
+// import 'package:shetech_app/instructor/db_page.dart';
+// import 'package:shetech_app/instructor/frontend_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'ml_page.dart';
-import 'html_page.dart';
+// import 'ml_page.dart';
+import 'course_detail.dart';
+// import 'python_page.dart';
+// import 'html_page.dart';
 import 'popups.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -104,31 +106,14 @@ class _CourseListPageState extends State<CourseListPage> {
 
                       return GestureDetector(
                         onTap: () {
-                          // Navigate to the specific course page based on course title
-                          if (course['title'] == 'Introduction to HTML') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HtmlPage()));
-                          } else if (course['title'] == 'Machine Learning') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MlPage()));
-                          } else if (course['title'] ==
-                              'Front-end Development') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FrontEndPage()));
-                          } else if (course['title'] ==
-                              'Database Normalization') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const DbPage()));
-                          }
+                          // Navigate to CourseDetailPage and pass the course data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CourseDetailPage(course: course),
+                            ),
+                          );
                         },
                         child: CourseItem(
                           imageUrl: course['image_url'] ?? 'images/default.jpg',
@@ -271,7 +256,8 @@ class CourseItem extends StatelessWidget {
                             contentPadding: const EdgeInsets.all(8.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: const BorderSide(color: Colors.purple),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple),
                             ),
                           ),
                         )

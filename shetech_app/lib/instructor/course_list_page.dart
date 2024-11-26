@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shetech_app/instructor/db_page.dart';
-import 'package:shetech_app/instructor/frontend_page.dart';
+// import 'package:shetech_app/instructor/db_page.dart';
+// import 'package:shetech_app/instructor/frontend_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'ml_page.dart';
-import 'html_page.dart';
+// import 'ml_page.dart';
+import 'course_detail.dart';
+// import 'python_page.dart';
+// import 'html_page.dart';
 import 'popups.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -27,10 +29,10 @@ class _CourseListPageState extends State<CourseListPage> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/courses');
+        Navigator.pushReplacementNamed(context, '/instructor/courses');
         break;
       case 2: // Setting
         Navigator.pushReplacementNamed(context, '/calendar');
@@ -104,31 +106,14 @@ class _CourseListPageState extends State<CourseListPage> {
 
                       return GestureDetector(
                         onTap: () {
-                          // Navigate to the specific course page based on course title
-                          if (course['title'] == 'Introduction to HTML') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HtmlPage()));
-                          } else if (course['title'] == 'Machine Learning') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MlPage()));
-                          } else if (course['title'] ==
-                              'Front-end Development') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FrontEndPage()));
-                          } else if (course['title'] ==
-                              'Database Normalization') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const DbPage()));
-                          }
+                          // Navigate to CourseDetailPage and pass the course data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CourseDetailPage(course: course),
+                            ),
+                          );
                         },
                         child: CourseItem(
                           imageUrl: course['image_url'] ?? 'images/default.jpg',
@@ -137,7 +122,7 @@ class _CourseListPageState extends State<CourseListPage> {
                               course['Instructor'] ?? 'Unknown Instructor',
                           students:
                               '${course['Students Enrolled'] ?? 0} students',
-                          rating: (course['Rating'] ?? 0.0).toDouble(),
+                          rating: (course['Rating'] ?? 0.0),
                           isEditing: isEditing,
                         ),
                       );
@@ -221,6 +206,7 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
+  final bool isEditing;
 
   const CourseItem({
     super.key,
@@ -229,10 +215,9 @@ class CourseItem extends StatelessWidget {
     required this.instructor,
     required this.students,
     required this.rating,
-    required bool isEditing,
+    // required bool isEditing,
+    required this.isEditing,
   });
-
-  get isEditing => null;
 
   @override
   Widget build(BuildContext context) {
@@ -280,16 +265,9 @@ class CourseItem extends StatelessWidget {
                           title,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18, // Increase font size
+                            fontSize: 18,
                           ),
                         ),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18, // Increase font size
-                    ),
-                  ),
                   Text(instructor),
                   const SizedBox(height: 5),
                   Row(

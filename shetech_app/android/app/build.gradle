@@ -1,17 +1,57 @@
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
 plugins {
-    id "com.android.application"
-    // START: FlutterFire Configuration
+    id 'com.android.application' version '8.3.2'
+    id 'kotlin-android'
     id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def keyStoreProperties = new Properties()
+def keyStorePropertiesFile = rootProject.file('key.properties')
+if (keyStorePropertiesFile.exists()) {
+    keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
 }
 
 android {
-    namespace "shetech.example.app"  // Add this line
-    compileSdkVersion 35
-    ndkVersion "25.1.8937393"  // Add this line
+    namespace "shetech.example.app"
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -23,19 +63,26 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "shetech.example.app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId "shetech.example.app"
+        minSdkVersion 23
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keyStoreProperties['keyAlias']
+            keyPassword keyStoreProperties['keyPassword']
+            storeFile keyStoreProperties['storeFile'] ? file(keyStoreProperties['storeFile']) : null
+            storePassword keyStoreProperties['storePassword']
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -50,11 +97,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.firebase:firebase-dynamic-links'
 }
-
-android {                                      
-   defaultConfig {                               
-     minSdkVersion 23                            
-   }                                             
- }  

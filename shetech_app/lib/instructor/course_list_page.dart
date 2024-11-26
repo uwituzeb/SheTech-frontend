@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shetech_app/instructor/db_page.dart';
-import 'package:shetech_app/instructor/frontend_page.dart';
-import 'ml_page.dart';
-import 'html_page.dart';
+// import 'package:shetech_app/instructor/db_page.dart';
+// import 'package:shetech_app/instructor/frontend_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'ml_page.dart';
+import 'course_detail.dart';
+// import 'python_page.dart';
+// import 'html_page.dart';
 import 'popups.dart';
 
-
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
@@ -15,6 +18,8 @@ class CourseListPage extends StatefulWidget {
 
 class _CourseListPageState extends State<CourseListPage> {
   int _selectedIndex = 0;
+  bool isEditing = false; // State for managing edit mode
+
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
       setState(() {
@@ -24,10 +29,10 @@ class _CourseListPageState extends State<CourseListPage> {
 
     switch (index) {
       case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
         break;
       case 1: // Calendar
-        Navigator.pushReplacementNamed(context, '/courses');
+        Navigator.pushReplacementNamed(context, '/instructor/courses');
         break;
       case 2: // Setting
         Navigator.pushReplacementNamed(context, '/calendar');
@@ -43,17 +48,17 @@ class _CourseListPageState extends State<CourseListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-          backgroundColor: Theme.of(context).primaryColor,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
+        title: const Text('SheTech', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -74,79 +79,56 @@ class _CourseListPageState extends State<CourseListPage> {
             ),
             const SizedBox(height: 20),
 
-            // Course List
+            // Course List from Firestore
             Expanded(
-              child: ListView(
-                children: [
-                  // Course 1
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HtmlPage()),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: firestore.collection('courses').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Error loading courses'));
+                  }
+
+                  final courses = snapshot.data?.docs ?? [];
+
+                  if (courses.isEmpty) {
+                    return const Center(child: Text('No courses available'));
+                  }
+
+                  return ListView.builder(
+                    itemCount: courses.length,
+                    itemBuilder: (context, index) {
+                      final course =
+                          courses[index].data() as Map<String, dynamic>;
+
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigate to CourseDetailPage and pass the course data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CourseDetailPage(course: course),
+                            ),
+                          );
+                        },
+                        child: CourseItem(
+                          imageUrl: course['image_url'] ?? 'images/default.jpg',
+                          title: course['Title'] ?? 'Untitled Course',
+                          instructor:
+                              course['Instructor'] ?? 'Unknown Instructor',
+                          students:
+                              '${course['Students Enrolled'] ?? 0} students',
+                          rating: (course['Rating'] ?? 0.0),
+                          isEditing: isEditing,
+                        ),
                       );
                     },
-                    child: const CourseItem(
-                      imageUrl: 'images/html.jpg',
-                      title: 'Introduction to HTML',
-                      instructor: 'Samule Doe',
-                      students: '4k student',
-                      rating: 4.7,
-                    ),
-                  ),
-                  // Course 2
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MlPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/ml.jpg',
-                      title: 'Machine Learning',
-                      instructor: 'Sarrah Morry',
-                      students: '2k student',
-                      rating: 4.0,
-                    ),
-                  ),
-                  // Course 3
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const FrontEndPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/front-end.jpg',
-                      title: 'Front-end Development',
-                      instructor: 'Sarrah Morry',
-                      students: '1k student',
-                      rating: 4.2,
-                    ),
-                  ),
-                  // Course 4
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to the lesson page when the first course is clicked
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const DbPage()),
-                      );
-                    },
-                    child: const CourseItem(
-                      imageUrl: 'images/database.jpg',
-                      title: 'Database normalization',
-                      instructor: 'Sarrah Morry',
-                      students: '2k student',
-                      rating: 4.0,
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
 
@@ -159,14 +141,16 @@ class _CourseListPageState extends State<CourseListPage> {
                     // Show first popup when "Add new course" is pressed
                     showDialog(
                       context: context,
-                      builder: (BuildContext context) => const AddCoursePopup1(),
+                      builder: (BuildContext context) =>
+                          const AddCoursePopup1(),
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     foregroundColor: Theme.of(context).primaryColor,
                     side: const BorderSide(
-                      color: Color.fromARGB(255, 157, 78, 221), // Purple border color
+                      color: Color.fromARGB(
+                          255, 157, 78, 221), // Purple border color
                       width: 2, // Border width
                     ),
                   ),
@@ -215,9 +199,6 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 }
 
-
-  
-
 // Widget to represent each course item
 class CourseItem extends StatelessWidget {
   final String imageUrl;
@@ -225,13 +206,17 @@ class CourseItem extends StatelessWidget {
   final String instructor;
   final String students;
   final double rating;
+  final bool isEditing;
 
-  const CourseItem({super.key, 
+  const CourseItem({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.instructor,
     required this.students,
     required this.rating,
+    // required bool isEditing,
+    required this.isEditing,
   });
 
   @override
@@ -244,11 +229,19 @@ class CourseItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Course Image
-            Image.asset(
+            Image.network(
               imageUrl,
               width: 60, // Adjusted for larger size
               height: 60,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'images/default.jpg', // Local fallback image
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                );
+              },
             ),
             const SizedBox(width: 15), // Space between image and text
             // Course Details
@@ -256,13 +249,25 @@ class CourseItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18, // Increase font size
-                    ),
-                  ),
+                  isEditing
+                      ? TextField(
+                          decoration: InputDecoration(
+                            hintText: title,
+                            contentPadding: const EdgeInsets.all(8.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide:
+                                  const BorderSide(color: Colors.purple),
+                            ),
+                          ),
+                        )
+                      : Text(
+                          title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
                   Text(instructor),
                   const SizedBox(height: 5),
                   Row(
@@ -279,6 +284,7 @@ class CourseItem extends StatelessWidget {
                 ],
               ),
             ),
+            if (isEditing) const Icon(Icons.edit, size: 20),
           ],
         ),
       ),

@@ -151,7 +151,7 @@ class DashboardScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                '📘 Added courses',
+                '📘 Enrolled courses',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

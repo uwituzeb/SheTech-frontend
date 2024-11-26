@@ -6,20 +6,6 @@ class DbPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-        appBar: AppBar(
-          title: const Text('SheTech', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color.fromARGB(255, 157, 78, 221),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.person,color: Colors.white,),
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-            ),
-          ],
-        ),
-=======
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('SheTech'),
@@ -33,7 +19,6 @@ class DbPage extends StatelessWidget {
           ),
         ],
       ),
->>>>>>> origin/main
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -47,7 +32,7 @@ class DbPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('COURSE', style: TextStyle(color: Color.fromARGB(255, 157, 78, 221), fontSize: 16)),
-                    Text('Database Normalization', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text('Database Normalization', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 ElevatedButton(

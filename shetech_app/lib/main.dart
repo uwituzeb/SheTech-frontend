@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-import 'splash.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'forgot_password_screen.dart';
-import 'welcome_screen.dart';
-import 'reset_password.dart';
-import 'create_password.dart';
-import 'instructor/course_list_page.dart';
-import 'courses.dart';
-
-=======
 // ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -58,7 +45,6 @@ void main() async {
   }).onError((error) {
     print('Dynamic Links error: $error');
   });
->>>>>>> origin/main
 
   runApp(const MyApp());
 }
@@ -81,11 +67,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/courses',
       routes: {
-<<<<<<< HEAD
-        '/courses': (context) => const CourseListPageScreen(),
-=======
         '/home': (context) => const HomeScreen(),
->>>>>>> origin/main
         '/splash': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/signup': (context) => const SignupScreen(),

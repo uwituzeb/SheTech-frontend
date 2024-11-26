@@ -49,7 +49,11 @@ class _SignupScreenState extends State<SignupScreen> {
       );
       
       if (userCredential != null && mounted) {
+        if (_selectedRole == 'teacher') {
+        Navigator.pushReplacementNamed(context, '/instructor/landing_page');
+      } else {
         Navigator.pushReplacementNamed(context, '/home');
+      }
       }
     } catch (e) {
       setState(() {

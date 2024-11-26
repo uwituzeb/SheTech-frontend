@@ -74,11 +74,7 @@ class _BookingScreenState extends State<BookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Banner image (use Image.asset for local image)
-<<<<<<< HEAD:shetech_app/lib/events/eventpage.dart
                 Image.asset('images/event.jpg',
-=======
-                Image.asset('images/event.jpeg',
->>>>>>> c5ac64c4c65b3d5388ccf192dce61208eea98fe2:shetech_app/lib/eventpage.dart
                     height: 200, width: 450, fit: BoxFit.cover),
                 const SizedBox(height: 16),
                 // Motivational Quote

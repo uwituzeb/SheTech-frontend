@@ -98,6 +98,16 @@ flutter run
   |-- homepage.dart             # homepage widget
 ```
 
+## Security Rules
+
+The App allows two roles for users i.e learners and instructors, hence requires security rules for role-based access control, protection of user data
+, Controlled access to courses, enrollments, and progress as well as prevent unauthorized data modifications.
+
+- Only authenticated users can access specific parts of your database
+- Learners and instructors will have different levels of data access
+- Some actions are restricted according to user role
+
+
 ## App Routes
 
 The App includes the following routes:

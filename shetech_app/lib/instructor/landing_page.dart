@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // import 'package:shetech_app/instructor/course_list_page.dart';
 
@@ -172,42 +173,56 @@ class DashboardScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8.0),
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.blue.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
+
+          // Fetch Courses
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('courses').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No courses available'));
+              }
+
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  var courseData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+
+                  return CourseCard(
+                    courseName: courseData['Title'] ?? 'Untitled Course',
+                    courseColor: _getColorForIndex(index),
+                    instructor: courseData['Instructor'] ?? 'Unknown Instructor',
+                    schedule: courseData['Schedule'] ?? 'Schedule not provided',
+                    location: courseData['Location'] ?? 'Location not specified',
+                  );
+                },
+              );
+            },
           ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.green.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: Colors.blueGrey.shade100,
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0), // Add space between CourseCards
-          // ignore: prefer_const_constructors
-          CourseCard(
-            courseName: 'Graphic Fundamentals-ART101',
-            courseColor: const Color.fromARGB(255, 114, 169, 179),
-            instructor: 'Prof.Smith',
-            schedule: 'Mon & Wed, 9:00 AM - 10:30 AM',
-            location: 'Design Studio A',
-          ),
-          const SizedBox(height: 16.0),
         ],
       ),
     );
+  }
+
+  Color _getColorForIndex(int index) {
+    final colors = [
+      Colors.blue.shade100,
+      Colors.green.shade100,
+      Colors.blueGrey.shade100,
+      const Color.fromARGB(255, 114, 169, 179),
+      Colors.purple.shade100,
+      Colors.orange.shade100,
+    ];
+    return colors[index % colors.length];
   }
 }
 

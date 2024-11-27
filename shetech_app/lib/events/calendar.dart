@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,31 +45,48 @@ class _CalendarPageState extends State<CalendarPageScreen> {
 
   Future<void> _fetchEvents() async {
     try {
-      // Fetch documents from the Firestore 'events' collection
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('events').get();
+      User? currentUser = FirebaseAuth.instance.currentUser;
+       if (currentUser == null) {
+      print('No authenticated user');
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please log in to view events')),
+      );
+      return;
+    }
+
+      IdTokenResult tokenResult = await currentUser.getIdTokenResult();
+      String? userRole = tokenResult.claims?['role'];
+
+
+    
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('events')
+      .get();
+
+      for (var doc in snapshot.docs) {
+      print('Document ID: ${doc.id}');
+      print('Document Data: ${doc.data()}');
+    }
 
       // Clear existing events
       _events.clear();
 
-      // Iterate through each document in the snapshot
       for (var doc in snapshot.docs) {
-        Event event = Event.fromFirestore(doc);
+      Event event = Event.fromFirestore(doc);
+      DateTime normalizedDate = DateTime(event.date.year, event.date.month, event.date.day);
 
-        // Normalize date to just year, month, day
-        DateTime normalizedDate = DateTime(event.date.year, event.date.month, event.date.day);
-
-        // Add the event to the map
-        if (_events[normalizedDate] == null) {
-          _events[normalizedDate] = [event];
-        } else {
-          _events[normalizedDate]!.add(event);
-        }
+      if (_events[normalizedDate] == null) {
+        _events[normalizedDate] = [event];
+      } else {
+        _events[normalizedDate]!.add(event);
       }
+    }
 
-      // Update the selected events after fetching
       _selectedEvents.value = _getEventsForDay(_focusedDay);
       
-      // Update loading state
       setState(() {
         _isLoading = false;
       });
@@ -88,7 +106,7 @@ class _CalendarPageState extends State<CalendarPageScreen> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // Normalize the day to remove time components
+    // Event event = Event.fromFirestore(doc);
     DateTime normalizedDay = DateTime(day.year, day.month, day.day);
     return _events[normalizedDay] ?? []; 
   }

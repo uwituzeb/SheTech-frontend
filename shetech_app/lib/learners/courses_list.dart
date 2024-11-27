@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shetech_app/instructor/db_page.dart';
-import 'package:shetech_app/instructor/frontend_page.dart';
+// import 'package:shetech_app/instructor/db_page.dart';
+// import 'package:shetech_app/instructor/frontend_page.dart';
 
-import 'package:shetech_app/instructor/ml_page.dart';
-import 'package:shetech_app/instructor/html_page.dart';
+// import 'package:shetech_app/instructor/ml_page.dart';
+// import 'package:shetech_app/instructor/html_page.dart';
+import 'package:shetech_app/learners/db_page.dart';
+import 'package:shetech_app/learners/frontend_page.dart';
+import 'package:shetech_app/learners/ml_page.dart';
+import 'package:shetech_app/learners/html_page.dart';
 
 
 class CourseListPageScreen extends StatefulWidget {

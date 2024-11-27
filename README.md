@@ -31,7 +31,7 @@ This Flutter-based app offers a comprehensive learning platform with features ta
 ### Profile & Settings
 
   - Update user profile information
-  - 
+  - Logout of account
 ### Instructor Portal
 
   - Create and manage courses

@@ -107,11 +107,12 @@ class _CourseListPageState extends State<CourseListPage> {
                       return GestureDetector(
                         onTap: () {
                           // Navigate to CourseDetailPage and pass the course data
+                          final courseId = courses[index].id;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CourseDetailPage(course: course),
+                                  CourseDetailPage(course: course, courseId: courseId),
                             ),
                           );
                         },

@@ -32,7 +32,7 @@ class DbPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('COURSE', style: TextStyle(color: Color.fromARGB(255, 157, 78, 221), fontSize: 16)),
-                    Text('Database Normalization', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text('Database Normalization', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ],
                 ),
                 ElevatedButton(

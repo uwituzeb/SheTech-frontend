@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HtmlPage extends StatelessWidget {
-  const HtmlPage({super.key});
+class MlPage extends StatelessWidget {
+  const MlPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +24,12 @@ class HtmlPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Course Header with title and edit button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('COURSE', style: TextStyle(color: Color.fromARGB(255, 157, 78, 221), fontSize: 16)),
-                    Text('Introduction to HTML', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text('Machine Learning', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   ],
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 157, 78, 221)),
-                  child: const Text('Edit course',
-                  style: TextStyle(color: Colors.white)),
-                ),
-              ],
             ),
             const SizedBox(height: 20),
 
@@ -50,7 +39,7 @@ class HtmlPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'The standard language for creating and organizing material on the web is called HTML...', 
+                    'Master the basics of machine learning to build predictive models and analyze data effectively.', 
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 10),
@@ -108,9 +97,9 @@ class HtmlPage extends StatelessWidget {
 
             // Lessons
             const Text('Lessons', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const LessonItem(lessonNumber: 1, title: 'Introduction to HTML', completed: true),
-            const LessonItem(lessonNumber: 2, title: 'HTML Tags and Elements', completed: false),
-            const LessonItem(lessonNumber: 3, title: 'Attributes and Links', completed: false),
+            const LessonItem(lessonNumber: 1, title: 'Mathematics for ML', completed: true),
+            const LessonItem(lessonNumber: 2, title: 'ML Tags and Elements', completed: false),
+            const LessonItem(lessonNumber: 3, title: 'Model Evaluation and Optimization', completed: false),
             // Add more lessons similarly...
           ],
         ),

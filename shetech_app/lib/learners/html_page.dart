@@ -24,23 +24,12 @@ class HtmlPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Course Header with title and edit button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('COURSE', style: TextStyle(color: Color.fromARGB(255, 157, 78, 221), fontSize: 16)),
                     Text('Introduction to HTML', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   ],
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 157, 78, 221)),
-                  child: const Text('Edit course',
-                  style: TextStyle(color: Colors.white)),
-                ),
-              ],
             ),
             const SizedBox(height: 20),
 

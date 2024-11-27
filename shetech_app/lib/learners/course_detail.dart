@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'editing_course.dart';
 
 class CourseDetailPage extends StatefulWidget {
   final String courseId; // ID to fetch the course details
@@ -56,7 +55,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(courseData?['Title'] ?? 'Course Detail'),
+        title: Text(courseData?['Title'] ?? 'Course Detail', style:const TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 157, 78, 221),
         actions: const [
           Icon(Icons.person), // Icon representing user
@@ -71,58 +70,32 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Course Header with title and edit button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // Course Header with title
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-  borderRadius: BorderRadius.circular(8.0), // Optional for rounded corners
-  child: Image.asset(
-    'images/default.jpg',
-    width: 250, // Ensures it fits the screen width
-    height: 250, // Fixed height
-    fit: BoxFit.cover, // Scales the image while maintaining aspect ratio
-  ),
-),
-                              const SizedBox(height: 20),
-                              const Text(
-                                'COURSE',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 157, 78, 221),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                courseData!['Title'] ?? 'Untitled Course',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Navigate to editing course page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditCourseScreen(
-                                    course: courseData!,
-                                  ),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 157, 78, 221),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0), 
+                            child: Image.asset(
+                              'images/default.jpg',
+                              width: 250, 
+                              height: 250, 
+                              fit: BoxFit.cover,
                             ),
-                            child: const Text(
-                              'Edit course',
-                              style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'COURSE',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 157, 78, 221),
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            courseData!['Title'] ?? 'Untitled Course',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -182,24 +155,6 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                     ],
                   ),
                 ),
-    );
-  }
-}
-
-class EditCourseScreen extends StatelessWidget {
-  final Map<String, dynamic> course;
-
-  const EditCourseScreen({super.key, required this.course});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit ${course['Title'] ?? 'Course'}'),
-      ),
-      body: const Center(
-        child: Text('Edit course screen here'),
-      ),
     );
   }
 }

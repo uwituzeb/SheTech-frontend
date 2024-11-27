@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shetech_app/instructor/db_page.dart';
+import 'package:shetech_app/instructor/frontend_page.dart';
 
-import 'package:shetech_app/learners/course_detail.dart';
+import 'package:shetech_app/instructor/ml_page.dart';
+import 'package:shetech_app/instructor/html_page.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:shetech_app/learners/course_detail.dart';
-
-final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class CourseListPageScreen extends StatefulWidget {
   const CourseListPageScreen({super.key});
@@ -125,58 +124,72 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
               ),
               const SizedBox(height: 20),
 
-               Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore.collection('courses').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (snapshot.hasError) {
-                    return const Center(child: Text('Error loading courses'));
-                  }
-
-                  final courses = snapshot.data?.docs ?? [];
-
-                  if (courses.isEmpty) {
-                    return const Center(child: Text('No courses available'));
-                  }
-
-                  return ListView.builder(
-                    itemCount: courses.length,
-                    itemBuilder: (context, index) {
-                      final course =
-                          courses[index].data() as Map<String, dynamic>;
-
-                      return GestureDetector(
-                        onTap: () {
-                          // Navigate to CourseDetailPage and pass the course data
-                          final courseId = courses[index].id;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CourseDetailPage(course: course, courseId: courseId),
-                            ),
-                          );
-                        },
-                        child: CourseItem(
-                          imageUrl: course['image_url'] ?? 'images/default.jpg',
-                          title: course['Title'] ?? 'Untitled Course',
-                          instructor:
-                              course['Instructor'] ?? 'Unknown Instructor',
-                          students:
-                              '${course['Students Enrolled'] ?? 0} students',
-                          rating: (course['Rating'] ?? 0.0),
-                          
-                        ),
-                      );
-                    },
-                  );
-                },
+              Expanded(
+                child: ListView(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HtmlPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/html.jpg',
+                        title: 'Introduction to HTML',
+                        instructor: 'Samule Doe',
+                        students: '4k student',
+                        rating: 4.7,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MlPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/ml.jpg',
+                        title: 'Machine Learning',
+                        instructor: 'Sarrah Morry',
+                        students: '2k student',
+                        rating: 4.0,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const FrontEndPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/front-end.jpg',
+                        title: 'Front-end Development',
+                        instructor: 'Sarrah Morry',
+                        students: '1k student',
+                        rating: 4.2,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const DbPage()),
+                        );
+                      },
+                      child: const CourseItem(
+                        imageUrl: 'images/database.jpg',
+                        title: 'Database normalization',
+                        instructor: 'Sarrah Morry',
+                        students: '2k student',
+                        rating: 4.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             ],
           ),
         ),
@@ -196,9 +209,12 @@ class _CourseListPageScreenState extends State<CourseListPageScreen> {
               icon: Icon(Icons.menu_book),
               label: 'courses',
             ),
+
+            
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today_sharp),
               label: 'calendar',
+              
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

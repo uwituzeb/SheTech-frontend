@@ -52,7 +52,7 @@ class _CourseListPageState extends State<CourseListPage> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person),color: Colors.white,
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
@@ -107,11 +107,12 @@ class _CourseListPageState extends State<CourseListPage> {
                       return GestureDetector(
                         onTap: () {
                           // Navigate to CourseDetailPage and pass the course data
+                          final courseId = courses[index].id;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CourseDetailPage(course: course),
+                                  CourseDetailPage(course: course, courseId: courseId),
                             ),
                           );
                         },

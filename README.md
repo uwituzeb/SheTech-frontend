@@ -38,6 +38,9 @@ This Flutter-based app offers a comprehensive learning platform with features ta
   - Update existing course details, add lessons, and share resources
   - Real-time course updates using Firebase
 
+## Download APK
+[Download the latest APK](https://drive.google.com/file/d/1WfyXty4RWHKcOwMKFixC23a0c8hCCRwD/view?usp=drive_link)
+
 ## Getting Started
 
 ### Prerequisites

@@ -100,13 +100,25 @@ flutter run
 
 ## Security Rules
 
-The App allows two roles for users i.e learners and instructors, hence requires security rules for role-based access control, protection of user data
-, Controlled access to courses, enrollments, and progress as well as prevent unauthorized data modifications.
+The project uses Firebase Firestore with comprehensive security rules to protect data access:
 
-- Only authenticated users can access specific parts of your database
-- Learners and instructors will have different levels of data access
-- Some actions are restricted according to user role
+## User Authentication Rules
 
+- Users can only read and write their own user document
+- Authentication is required for most operations
+
+## Collection-specific Rules
+
+- Users: Read/write only for the authenticated user
+- Courses:
+  - Read access for all signed-in users
+  - Create/update only for instructors
+
+
+## Lessons:
+
+- Public read access
+- Create/update requires authentication
 
 ## App Routes
 
@@ -125,6 +137,8 @@ routes: {
 '/create-password': (context) => const CreatePasswordScreen(),
 '/book-event': (context) => const BookingScreen(),
 '/instructor/courses': (context) => const CourseListPage(),
+'/instructor/landing_page': (context) => const InstructorHomeScreen(),
+'/instructor/editing_course': (context) => const EditCourseScreen(course: {}),
 '/profile': (context) => const ShetechProfile(),
 '/settings': (context) => const SettingScreen(),
 '/calendar': (context) => const CalendarPageScreen(),
@@ -132,6 +146,13 @@ routes: {
 },
 
 ```
+
+## Dynamic Links
+
+The application handles dynamic links, specifically for password reset:
+
+- When a password reset link is clicked, it navigates to `/create-password` with the reset code
+
 
 ## Contributing
 

@@ -159,7 +159,13 @@ The application handles dynamic links, specifically for password reset:
 
 ## Widget Tests
 
-In the tests directory in our app, we implemented widget tests to verify the full functionality of most of the used widgets. Some tests include but are not limited to widgets used in CourseListPage for learners and instructors, a widget to maintain courses with no lessons on the instructor side, and more.
+In the tests directory in our app, we implemented widget tests to verify the full functionality of most of the used widgets. These widgets are for androids of all types and these are some of the tests:
+
+- The widget CourseListPageScreen was tested to ensure courses load correctly from Firestore, user interactions navigate to details pages, and proper UI states are displayed for both populated and empty data scenarios.
+- The widget courseWithNoLessons was tested to ensure it correctly handles courses with no lessons. This is particularly important for instructors.
+- 'completedIcon' and 'incompletedIcon' were tested to apply to lessons depending on whether the lesson was taken or not
+
+These are some of the widgets we tested and what their tests are for.
 
 
 ## Contributing

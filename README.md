@@ -157,6 +157,11 @@ The application handles dynamic links, specifically for password reset:
 - When a password reset link is clicked, it navigates to `/create-password` with the reset code
 
 
+## Widget Tests
+
+In the tests directory in our app, we implemented widget tests to verify the full functionality of most of the used widgets. Some tests include but are not limited to widgets used in CourseListPage for learners and instructors, a widget to maintain courses with no lessons on the instructor side, and more.
+
+
 ## Contributing
 
 Contributions are welcome! If you want to contribute, please follow these steps:
